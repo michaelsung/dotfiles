@@ -41,7 +41,12 @@ vim.opt.rtp:prepend(lazypath)
 
 -- plugins
 require("lazy").setup({
-    { "catppuccin/nvim", name = "catppuccin" },
+    { "catppuccin/nvim", name = "catppuccin",
+    config = function()
+        vim.cmd.colorscheme "catppuccin"
+        require("catppuccin").setup()
+    end,
+    },
     { "folke/which-key.nvim",
     config = function()
       vim.o.timeout = true
@@ -56,4 +61,3 @@ require("lazy").setup({
     }
 })
 
-vim.cmd.colorscheme "catppuccin"
