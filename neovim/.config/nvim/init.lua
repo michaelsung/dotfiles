@@ -86,6 +86,8 @@ require("lazy").setup({
     "nvim-tree/nvim-tree.lua", version = "*",
     dependencies = { "nvim-tree/nvim-web-devicons" },
     config = function()
+       vim.g.loaded_netrw = 1
+       vim.g.loaded_netrwPlugin = 1
        vim.keymap.set('n', '<leader>pv', '<Cmd>NvimTreeToggle<CR>', { desc = "NvimTree: Toggle open" })
        require("nvim-tree").setup()
     end,
