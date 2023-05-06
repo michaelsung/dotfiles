@@ -91,6 +91,17 @@ require("lazy").setup({
        vim.keymap.set('n', '<leader>pv', '<Cmd>NvimTreeToggle<CR>', { desc = "NvimTree: Toggle open" })
        require("nvim-tree").setup()
     end,
-    }
+    },
+    {
+    'nvim-lualine/lualine.nvim',
+    dependencies = { "nvim-tree/nvim-web-devicons" },
+    config = function()
+        require("lualine").setup({
+            options = {
+                theme = "catppuccin"
+            }
+        })
+    end,
+    },
 })
 
