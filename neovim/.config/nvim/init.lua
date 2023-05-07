@@ -99,7 +99,6 @@ require("lazy").setup({
             require("nvim-tree").setup()
         end,
     },
-
     {
         "nvim-treesitter/nvim-treesitter",
         build = ":TSUpdate",
@@ -124,18 +123,16 @@ require("lazy").setup({
             -- LSP Support
             { 'neovim/nvim-lspconfig' }, -- Required
             {
-                -- Optional
                 'williamboman/mason.nvim',
                 build = function()
                     pcall(vim.cmd, 'MasonUpdate')
                 end,
             },
             { 'williamboman/mason-lspconfig.nvim' }, -- Optional
-
             -- Autocompletion
-            { 'hrsh7th/nvim-cmp' },     -- Required
-            { 'hrsh7th/cmp-nvim-lsp' }, -- Required
-            { 'L3MON4D3/LuaSnip' },     -- Required
+            { 'hrsh7th/nvim-cmp' },                  -- Required
+            { 'hrsh7th/cmp-nvim-lsp' },              -- Required
+            { 'L3MON4D3/LuaSnip' },                  -- Required
         },
         config = function()
             local lsp = require('lsp-zero').preset({})
@@ -145,10 +142,23 @@ require("lazy").setup({
             end)
             lsp.ensure_installed({
                 'lua_ls',
+                'yamlls',
+                'tsserver',
+                'eslint',
             })
             -- (Optional) Configure lua language server for neovim
             require('lspconfig').lua_ls.setup(lsp.nvim_lua_ls())
             lsp.setup()
+            local cmp = require('cmp')
+            cmp.setup({
+                mapping = {
+                    ['<CR>'] = cmp.mapping.confirm({ select = false }),
+                },
+                preselect = 'item',
+                completion = {
+                    completeopt = 'menu,menuone,noinsert'
+                },
+            })
         end,
     },
 })
