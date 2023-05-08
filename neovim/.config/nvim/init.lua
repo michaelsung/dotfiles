@@ -124,9 +124,7 @@ require("lazy").setup({
             { 'neovim/nvim-lspconfig' }, -- Required
             {
                 'williamboman/mason.nvim',
-                build = function()
-                    pcall(vim.cmd, 'MasonUpdate')
-                end,
+                build = ":MasonUpdate"
             },
             { 'williamboman/mason-lspconfig.nvim' }, -- Optional
             -- Autocompletion
@@ -160,5 +158,19 @@ require("lazy").setup({
                 },
             })
         end,
+    },
+    {
+        'echasnovski/mini.statusline',
+        config = function()
+            require('mini.statusline').setup()
+        end
+    },
+    {
+        'petertriho/nvim-scrollbar',
+        dependencies = { "lewis6991/gitsigns.nvim" },
+        config = function()
+            require('scrollbar').setup()
+            require("scrollbar.handlers.gitsigns").setup()
+        end
     },
 })
