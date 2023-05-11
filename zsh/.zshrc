@@ -1,4 +1,5 @@
-if [ "$TMUX" = "" ]; then tmux; fi
+# launch tmux automatically
+# if [ "$TMUX" = "" ]; then tmux; fi
 eval "$(ssh-agent -s)"
 ssh-add ~/.ssh/github
 
