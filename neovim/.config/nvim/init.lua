@@ -18,15 +18,6 @@ vim.opt.scrolloff = 12
 vim.opt.syntax = "on"
 vim.opt.termguicolors = true
 
--- setting correct colour appearance in tmux - https://gist.github.com/andersevenrud/015e61af2fd264371032763d4ed965b6
--- You might have to force true color when using regular vim inside tmux as the colorscheme can appear to be grayscale with "termguicolors" option enabled.
-vim.api.nvim_exec([[
-if !has('gui_running') && &term =~ '^\%(screen\|tmux\)'
-  let &t_8f = "\<Esc>[38;2;%lu;%lu;%lum"
-  let &t_8b = "\<Esc>[48;2;%lu;%lu;%lum"
-endif
-]], false)
-
 -- plugin manager setup
 local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
 if not vim.loop.fs_stat(lazypath) then
@@ -47,8 +38,8 @@ require("lazy").setup({
         "catppuccin/nvim",
         name = "catppuccin",
         config = function()
-            vim.cmd.colorscheme "catppuccin"
             require("catppuccin").setup()
+            vim.cmd.colorscheme "catppuccin"
         end,
     },
     {
