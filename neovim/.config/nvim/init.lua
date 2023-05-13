@@ -1,22 +1,8 @@
--- stock vim key bindings
-vim.g.mapleader = " "
--- vim.keymap.set("n", "<leader>a", function() print "hi" end, { desc = "test leader bind" })
--- vim.keymap.set("n", "<leader>pv", "<Cmd>Vex<CR>", { desc = "NetRW (Vertical split)" })
-vim.keymap.set("n", "<leader>pq", "<Cmd>bp|bd #<CR>", { desc = "Buffer close" })
-
--- vim settings - editor
-vim.opt.number = true
-vim.opt.relativenumber = true
-vim.opt.tabstop = 4
-vim.opt.softtabstop = 4
-vim.opt.shiftwidth = 4
-vim.opt.expandtab = true
-vim.opt.smartindent = true
-vim.opt.scrolloff = 12
-
--- vim settings - appearance
-vim.opt.syntax = "on"
-vim.opt.termguicolors = true
+-- vim settings
+require "config.keymaps"
+require "config.editor"
+require "config.appearance"
+require "config.files"
 
 -- plugin manager setup
 local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
