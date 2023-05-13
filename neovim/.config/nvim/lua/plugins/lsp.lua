@@ -1,0 +1,63 @@
+return {
+    {
+        "nvim-treesitter/nvim-treesitter",
+        build = ":TSUpdate",
+        config = function()
+            require("nvim-treesitter.configs").setup({
+                ensure_installed = { "javascript", "typescript", "lua", "vim", "vimdoc" },
+                -- Install parsers synchronously (only applied to `ensure_installed`)
+                sync_install = false,
+                -- Automatically install missing parsers when entering buffer
+                auto_install = true,
+                highlight = {
+                    enable = true,
+                    additional_vim_regex_highlighting = false,
+                },
+            })
+        end,
+    },
+    {
+        'VonHeikemen/lsp-zero.nvim',
+        branch = 'v2.x',
+        dependencies = {
+            -- LSP Support
+            { 'neovim/nvim-lspconfig' }, -- Required
+            {
+                'williamboman/mason.nvim',
+                build = ":MasonUpdate"
+            },
+            { 'williamboman/mason-lspconfig.nvim' }, -- Optional
+            -- Autocompletion
+            { 'hrsh7th/nvim-cmp' },                  -- Required
+            { 'hrsh7th/cmp-nvim-lsp' },              -- Required
+            { 'L3MON4D3/LuaSnip' },                  -- Required
+        },
+        config = function()
+            local lsp = require('lsp-zero').preset({})
+            lsp.on_attach(function(_, bufnr)
+                lsp.default_keymaps({ buffer = bufnr })
+                lsp.buffer_autoformat()
+            end)
+            lsp.ensure_installed({
+                'lua_ls',
+                'yamlls',
+                'tsserver',
+                'eslint',
+                'gopls',
+            })
+            -- (Optional) Configure lua language server for neovim
+            require('lspconfig').lua_ls.setup(lsp.nvim_lua_ls())
+            lsp.setup()
+            local cmp = require('cmp')
+            cmp.setup({
+                mapping = {
+                    ['<CR>'] = cmp.mapping.confirm({ select = false }),
+                },
+                preselect = 'item',
+                completion = {
+                    completeopt = 'menu,menuone,noinsert'
+                },
+            })
+        end,
+    },
+}
