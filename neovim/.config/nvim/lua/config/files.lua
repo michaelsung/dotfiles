@@ -1,1 +1,1 @@
-vim.opt.autochdir = true
+vim.opt.autochdir = false
