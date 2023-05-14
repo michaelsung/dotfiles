@@ -1,11 +1,3 @@
-# launch tmux automatically
-# if [ "$TMUX" = "" ]; then tmux; fi
-eval "$(ssh-agent -s)"
-ssh-add ~/.ssh/github
-
-export NVM_DIR="$([ -z "${XDG_CONFIG_HOME-}" ] && printf %s "${HOME}/.nvm" || printf %s "${XDG_CONFIG_HOME}/nvm")"
-[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh" # This loads nvm
-
 # If you come from bash you might have to change your $PATH.
 # export PATH=$HOME/bin:/usr/local/bin:$PATH
 
@@ -78,7 +70,13 @@ ZSH_THEME="agnoster"
 # Custom plugins may be added to $ZSH_CUSTOM/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
-plugins=(git)
+plugins=(git command-not-found golang npm nvm ssh-agent sudo tmux common-aliases)
+
+zstyle :omz:plugins:ssh-agent identities github
+
+ZSH_TMUX_AUTOSTART="true"
+ZSH_TMUX_AUTOCONNECT="true"
+ZSH_TMUX_UNICODE="true"
 
 source $ZSH/oh-my-zsh.sh
 
