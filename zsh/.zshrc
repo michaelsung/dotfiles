@@ -76,7 +76,7 @@ plugins=(git command-not-found golang npm nvm ssh-agent sudo tmux common-aliases
 
 zstyle :omz:plugins:ssh-agent identities github
 
-ZSH_TMUX_AUTOSTART="true"
+ZSH_TMUX_AUTOSTART="false"
 ZSH_TMUX_AUTOCONNECT="true"
 ZSH_TMUX_UNICODE="true"
 
