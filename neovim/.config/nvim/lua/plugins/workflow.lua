@@ -1,15 +1,4 @@
 return {
-    --[[ {
-        "nvim-tree/nvim-tree.lua",
-        version = "*",
-        dependencies = { "nvim-tree/nvim-web-devicons" },
-        config = function()
-            vim.g.loaded_netrw = 1
-            vim.g.loaded_netrwPlugin = 1
-            vim.keymap.set('n', '<leader>pv', '<Cmd>NvimTreeToggle<CR>', { desc = "NvimTree: Toggle open" })
-            require("nvim-tree").setup()
-        end,
-    }, ]]
     {
         'stevearc/oil.nvim',
         dependencies = { "nvim-tree/nvim-web-devicons" },
@@ -18,6 +7,22 @@ return {
             vim.g.loaded_netrwPlugin = 1
             vim.keymap.set('n', '<leader>pv', '<C-w>v<Cmd>Oil<CR>', { desc = "Open Oil file explorer" })
             require("oil").setup({
+                keymaps = {
+                    ["g?"] = "actions.show_help",
+                    ["<CR>"] = "actions.select",
+                    ["<C-s>"] = "actions.select_vsplit",
+                    ["<C-h>"] = "actions.select_split",
+                    ["<C-t>"] = "actions.select_tab",
+                    -- ["<C-p>"] = "actions.preview",
+                    ["<C-c>"] = "actions.close",
+                    ["<C-l>"] = "actions.refresh",
+                    ["-"] = "actions.parent",
+                    ["_"] = "actions.open_cwd",
+                    ["`"] = "actions.cd",
+                    ["~"] = "actions.tcd",
+                    ["g."] = "actions.toggle_hidden",
+                },
+                use_default_keymaps = false,
                 view_options = {
                     show_hidden = true
                 }
