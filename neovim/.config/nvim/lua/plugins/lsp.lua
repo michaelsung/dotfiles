@@ -42,6 +42,7 @@ return {
                 'lua_ls',
                 'yamlls',
                 'tsserver',
+                'eslint',
                 'gopls',
             })
             -- (Optional) Configure lua language server for neovim
@@ -56,6 +57,12 @@ return {
                 completion = {
                     completeopt = 'menu,menuone,noinsert'
                 },
+            })
+            require('lspconfig').tsserver.setup({
+                on_init = function(client)
+                    client.server_capabilities.documentFormattingProvider = false
+                    client.server_capabilities.documentFormattingRangeProvider = false
+                end,
             })
         end,
     },
