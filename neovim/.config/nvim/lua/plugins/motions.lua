@@ -19,10 +19,4 @@ return {
             require("leap").add_default_mappings(true)
         end
     },
-    {
-        'numToStr/Comment.nvim',
-        config = function()
-            require('Comment').setup()
-        end
-    }
 }
