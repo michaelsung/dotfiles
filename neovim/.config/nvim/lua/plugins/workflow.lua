@@ -44,6 +44,9 @@ return {
         tag = '0.1.1',
         dependencies = { 'nvim-lua/plenary.nvim' },
         config = function()
+            -- name Telescope group in which-key
+            require('which-key').register({ ['<leader>'] = { f = { name = " Telescope" } } })
+
             local builtin = require('telescope.builtin')
             vim.keymap.set('n', '<leader>ff', builtin.find_files, { desc = "Telescope: Find files" })
             vim.keymap.set('n', '<C-p>', builtin.git_files, { desc = "Telescope: Git files" })

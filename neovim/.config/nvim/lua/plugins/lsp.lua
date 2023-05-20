@@ -34,8 +34,8 @@ return {
         },
         config = function()
             local lsp = require('lsp-zero').preset({})
-            lsp.on_attach(function(_, bufnr)
-                lsp.default_keymaps({ buffer = bufnr })
+            lsp.on_attach(function(client, bufnr)
+                lsp.default_keymaps({ buffer = bufnr, preserve_mappings = false })
                 lsp.buffer_autoformat()
             end)
             lsp.ensure_installed({
@@ -47,6 +47,7 @@ return {
             })
             -- (Optional) Configure lua language server for neovim
             require('lspconfig').lua_ls.setup(lsp.nvim_lua_ls())
+
             lsp.setup()
             local cmp = require('cmp')
             cmp.setup({
@@ -58,6 +59,7 @@ return {
                     completeopt = 'menu,menuone,noinsert'
                 },
             })
+            -- Disable tsserver formatting to prevent overriding .eslintrc / .prettierrc
             require('lspconfig').tsserver.setup({
                 on_init = function(client)
                     client.server_capabilities.documentFormattingProvider = false
@@ -74,7 +76,8 @@ return {
             null_ls.setup({
                 sources = {
                     null_ls.builtins.diagnostics.eslint,
-                    null_ls.builtins.formatting.prettier
+                    null_ls.builtins.formatting.prettier,
+                    null_ls.builtins.code_actions.gitsigns
                 },
             })
         end,
