@@ -44,7 +44,16 @@ return {
             vim.keymap.set('n', '<leader>fb', builtin.buffers, { desc = "Telescope: Buffers" })
             vim.keymap.set('n', '<leader>fh', builtin.help_tags, { desc = "Telescope: Help tags" })
             vim.keymap.set('n', '<leader>fr', builtin.lsp_references, { desc = "Telescope: References" })
-            require("telescope").setup()
+            require("telescope").setup({
+                pickers = {
+                    live_grep = {
+                        additional_args = function(opts)
+                            return { "--hidden", "--glob=!.git/" }
+                        end
+
+                    },
+                },
+            })
         end,
     },
     {
