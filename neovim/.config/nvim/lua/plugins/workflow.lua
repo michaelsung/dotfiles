@@ -5,7 +5,8 @@ return {
         config = function()
             vim.g.loaded_netrw = 1
             vim.g.loaded_netrwPlugin = 1
-            vim.keymap.set('n', '<leader>pv', '<C-w>v<Cmd>Oil<CR>', { desc = "Open Oil file explorer" })
+            vim.keymap.set('n', '<leader>pv', '<Cmd>NvimTreeClose<CR><C-w>v<C-w>r<Cmd>Oil<CR>',
+                { desc = "Open Oil file explorer" })
             require("oil").setup({
                 keymaps = {
                     ["g?"] = "actions.show_help",
@@ -23,6 +24,7 @@ return {
                     ["g."] = "actions.toggle_hidden",
                 },
                 use_default_keymaps = false,
+                default_file_explorer = false,
                 view_options = {
                     show_hidden = true
                 }

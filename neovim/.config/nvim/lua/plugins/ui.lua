@@ -37,4 +37,15 @@ return {
             require("bufferline").setup()
         end,
     },
+    {
+        "nvim-tree/nvim-tree.lua",
+        version = "*",
+        dependencies = {
+            "nvim-tree/nvim-web-devicons",
+        },
+        config = function()
+            vim.keymap.set('n', '<leader>pt', '<Cmd>NvimTreeToggle<CR>', { desc = "Open Nvim Tree" })
+            require("nvim-tree").setup()
+        end,
+    },
 }
