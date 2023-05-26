@@ -4,7 +4,7 @@ return {
         build = ":TSUpdate",
         config = function()
             require("nvim-treesitter.configs").setup({
-                ensure_installed = { "javascript", "typescript", "lua", "vim", "vimdoc" },
+                -- ensure_installed = { "javascript", "typescript", "lua", "vim", "vimdoc" },
                 -- Install parsers synchronously (only applied to `ensure_installed`)
                 sync_install = false,
                 -- Automatically install missing parsers when entering buffer
@@ -84,7 +84,6 @@ return {
                 sources = {
                     null_ls.builtins.diagnostics.eslint,
                     null_ls.builtins.formatting.prettier,
-                    null_ls.builtins.code_actions.gitsigns
                 },
             })
         end,

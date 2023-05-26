@@ -3,7 +3,19 @@ return {
         "catppuccin/nvim",
         name = "catppuccin",
         config = function()
-            require("catppuccin").setup()
+            require("catppuccin").setup({
+                integrations = {
+                    gitsigns = true,
+                    leap = true,
+                    markdown = true,
+                    mason = true,
+                    mini = true,
+                    nvimtree = true,
+                    telescope = true,
+                    treesitter = true,
+                    which_key = true,
+                }
+            })
             vim.cmd.colorscheme "catppuccin"
         end,
     },
