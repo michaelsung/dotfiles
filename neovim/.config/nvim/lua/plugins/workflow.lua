@@ -93,8 +93,7 @@ return {
                     end, { expr = true, desc = "Git: previous hunk" })
 
                     -- Register mapping group in which-key
-                    local wk = require("which-key")
-                    wk.register({ ["<leader>"] = { g = { name = " Gitsigns" } } })
+                    require("which-key").register({ ["<leader>"] = { g = { name = " Gitsigns" } } })
 
                     -- Actions
                     map('n', '<leader>gs', gs.stage_hunk, { desc = "Stage hunk" })
