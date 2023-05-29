@@ -5,7 +5,7 @@ return {
         config = function()
             vim.g.loaded_netrw = 1
             vim.g.loaded_netrwPlugin = 1
-            vim.keymap.set('n', '<leader>pv', '<Cmd>NvimTreeClose<CR><C-w>v<C-w>r<Cmd>Oil<CR>',
+            vim.keymap.set('n', '<leader>pv', '<Cmd>NvimTreeClose<CR><Cmd>Oil --float<CR>',
                 { desc = "Open Oil file explorer" })
             require("oil").setup({
                 keymaps = {
