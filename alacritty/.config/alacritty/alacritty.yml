@@ -7,7 +7,7 @@ font:
   offset:
     y: 6
   glyph_offset:
-    y: 4
+    y: 3
 import:
   - ~/AppData/Roaming/alacritty/catppuccin/catppuccin-mocha.yml
   - ~/.config/alacritty/catppuccin/catppuccin-mocha.yml
