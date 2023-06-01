@@ -1,4 +1,4 @@
--- vim settings
+-- load config files in lua/config
 require "config.keymaps"
 require "config.editor"
 require "config.appearance"
@@ -18,11 +18,12 @@ if not vim.loop.fs_stat(lazypath) then
 end
 vim.opt.rtp:prepend(lazypath)
 
+local lazy = require("lazy")
 -- load all plugin files in the lua/plugins folder.
-require("lazy").setup("plugins", {
+lazy.setup("plugins", {
     defaults = { lazy = false },
     checker = { enabled = true, notify = false },
     change_detection = { notify = false },
 })
-
-require("lazy").sync({ show = false })
+-- silently auto update plugins
+lazy.sync({ show = false })
