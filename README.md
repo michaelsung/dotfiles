@@ -1,12 +1,14 @@
 # Dependencies
-
 - oh-my-zsh https://ohmyz.sh/#install
 - zsh-autosuggestions https://github.com/zsh-users/zsh-autosuggestions
 - ripgrep https://github.com/BurntSushi/ripgrep
 - JetBrains Mono Nerd Font https://www.nerdfonts.com/font-downloads
 
 # Setup
-clone to ~/.dotfiles, pull in git submodules, and use stow to symlink dotfiles
+- clone to ~/.dotfiles
+- pull in git submodules
+- use stow to symlink dotfiles `stow alacritty neovim tmux zsh`
+- `CTRL+b` `I` to install tmux plugins
 
 # Troubleshooting
 Fixing backspace in tmux in macOS - https://stackoverflow.com/a/72596670
