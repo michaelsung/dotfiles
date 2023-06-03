@@ -1,6 +1,6 @@
 # Dependencies
 - oh-my-zsh https://ohmyz.sh/#install
-- zsh-autosuggestions https://github.com/zsh-users/zsh-autosuggestions
+- zsh-autosuggestions https://github.com/zsh-users/zsh-autosuggestions/blob/master/INSTALL.md#oh-my-zsh
 - ripgrep https://github.com/BurntSushi/ripgrep
 - JetBrains Mono Nerd Font https://www.nerdfonts.com/font-downloads
 
