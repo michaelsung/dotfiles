@@ -69,16 +69,6 @@ return {
         end
     },
     {
-        'akinsho/bufferline.nvim',
-        version = "*",
-        dependencies = 'nvim-tree/nvim-web-devicons',
-        config = function()
-            vim.keymap.set('n', '<leader>bl', '<Cmd>BufferLineCycleNext<CR>', { desc = "Bufferline: Cycle next" })
-            vim.keymap.set('n', '<leader>bh', '<Cmd>BufferLineCyclePrev<CR>', { desc = "Bufferline: Cycle previous" })
-            require("bufferline").setup()
-        end,
-    },
-    {
         "nvim-tree/nvim-tree.lua",
         version = "*",
         dependencies = {
