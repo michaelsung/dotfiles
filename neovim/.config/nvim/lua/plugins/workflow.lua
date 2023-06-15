@@ -119,4 +119,17 @@ return {
             })
         end,
     },
+    {
+        "folke/trouble.nvim",
+        dependencies = { "nvim-tree/nvim-web-devicons" },
+        opts = {
+            use_diagnostic_signs = true,
+        },
+        config = function()
+            require("which-key").register({ ["<leader>"] = { t = { name = " Trouble" } } })
+            vim.keymap.set("n", "<leader>to", "<cmd>TroubleToggle<cr>",
+                { silent = true, noremap = true, desc = "Toggle trouble" }
+            )
+        end
+    }
 }
