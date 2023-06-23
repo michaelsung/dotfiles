@@ -4,7 +4,6 @@ return {
         name = "catppuccin",
         config = function()
             require("catppuccin").setup({
-                -- transparent_background = true,
                 show_end_of_buffer = true,
                 integrations = {
                     gitsigns = true,
@@ -16,6 +15,14 @@ return {
                     telescope = true,
                     treesitter = true,
                     which_key = true,
+                },
+                highlight_overrides = {
+                    all = function(colors)
+                        return {
+                            LineNr = { fg = colors.lavender }, -- replace "some_color" with the color you want from the palette
+                            CursorLineNr = { fg = colors.blue }
+                        }
+                    end,
                 }
             })
             vim.cmd.colorscheme "catppuccin"
