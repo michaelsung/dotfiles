@@ -47,6 +47,7 @@ return {
             vim.keymap.set('n', '<leader>fb', builtin.buffers, { desc = "Telescope: Buffers" })
             vim.keymap.set('n', '<leader>fh', builtin.help_tags, { desc = "Telescope: Help tags" })
             vim.keymap.set('n', '<leader>fr', builtin.lsp_references, { desc = "Telescope: References" })
+            vim.keymap.set('n', '<leader>fm', builtin.marks, { desc = "Telescope: Marks" })
             require("telescope").setup({
                 pickers = {
                     live_grep = {
@@ -98,17 +99,21 @@ return {
                     -- Actions
                     map('n', '<leader>gs', gs.stage_hunk, { desc = "Stage hunk" })
                     map('n', '<leader>gr', gs.reset_hunk, { desc = "Reset hunk" })
-                    map('v', '<leader>gs', function() gs.stage_hunk { vim.fn.line("."), vim.fn.line("v") } end,
+                    map('v', '<leader>gs',
+                        function() gs.stage_hunk { vim.fn.line("."), vim.fn.line("v") } end,
                         { desc = "Stage hunk" })
-                    map('v', '<leader>gr', function() gs.reset_hunk { vim.fn.line("."), vim.fn.line("v") } end,
+                    map('v', '<leader>gr',
+                        function() gs.reset_hunk { vim.fn.line("."), vim.fn.line("v") } end,
                         { desc = "Reset hunk" })
 
                     map('n', '<leader>gS', gs.stage_buffer, { desc = "Stage buffer" })
                     map('n', '<leader>gu', gs.undo_stage_hunk, { desc = "Undo stage hunk" })
                     map('n', '<leader>gR', gs.reset_buffer, { desc = "Reset buffer" })
                     map('n', '<leader>gp', gs.preview_hunk, { desc = "Preview hunk" })
-                    map('n', '<leader>gb', function() gs.blame_line { full = true } end, { desc = "Blame line" })
-                    map('n', '<leader>gl', gs.toggle_current_line_blame, { desc = "Toggle current line blame" })
+                    map('n', '<leader>gb', function() gs.blame_line { full = true } end,
+                        { desc = "Blame line" })
+                    map('n', '<leader>gl', gs.toggle_current_line_blame,
+                        { desc = "Toggle current line blame" })
                     map('n', '<leader>gt', gs.diffthis, { desc = "Diff this" })
                     map('n', '<leader>gT', function() gs.diffthis('~') end, { desc = "Diff this ~" })
                     map('n', '<leader>gd', gs.toggle_deleted, { desc = "Toggle deleted" })
@@ -130,6 +135,12 @@ return {
             vim.keymap.set("n", "<leader>to", "<cmd>TroubleToggle<cr>",
                 { silent = true, noremap = true, desc = "Toggle trouble" }
             )
+        end
+    },
+    {
+        "chentoast/marks.nvim",
+        config = function()
+            require('marks').setup()
         end
     }
 }
