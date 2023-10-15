@@ -22,8 +22,4 @@ local lazy = require("lazy")
 -- load all plugin files in the lua/plugins folder.
 lazy.setup("plugins", {
     defaults = { lazy = false },
-    checker = { enabled = true, notify = false },
-    change_detection = { notify = false },
 })
--- silently auto update plugins
-lazy.sync({ show = false })
