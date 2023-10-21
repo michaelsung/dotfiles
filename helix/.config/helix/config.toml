@@ -4,14 +4,12 @@ theme = "catppuccin_mocha"
 line-number = "relative"
 cursorline = true
 color-modes = true
+bufferline = "always"
 
 [editor.cursor-shape]
 insert = "bar"
 normal = "block"
 select = "underline"
-
-[editor.indent-guides]
-render = false
 
 [editor.file-picker]
 hidden = false
@@ -19,8 +17,18 @@ hidden = false
 [editor.gutters.line-numbers]
 min-width = 4
 
+[editor.indent-guides]
+render = false
+
+[editor.lsp]
+display-messages = true
+display-inlay-hints = true
+
+[editor.soft-wrap]
+enable = true
+
 [editor.statusline]
-left = ["mode", "spacer", "version-control", "spacer", "spacer", "file-name", "file-modification-indicator"]
+left = ["mode", "spacer", "spacer", "version-control", "spacer", "spacer", "file-name"]
 center = []
 right = ["spinner", "diagnostics", "selections", "position-percentage", "file-encoding", "file-line-ending", "file-type"]
 separator = "│"
@@ -28,5 +36,5 @@ mode.normal = "NORMAL"
 mode.insert = "INSERT"
 mode.select = "SELECT"
 
-[editor.soft-wrap]
-enable = true
+[keys.normal]
+C-p = "file_picker"
