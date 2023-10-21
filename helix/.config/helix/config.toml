@@ -11,7 +11,7 @@ normal = "block"
 select = "underline"
 
 [editor.indent-guides]
-render = true
+render = false
 
 [editor.file-picker]
 hidden = false
