@@ -43,12 +43,6 @@ return {
         end
     },
     {
-        "lukas-reineke/indent-blankline.nvim",
-        config = function()
-            require("indent_blankline").setup()
-        end
-    },
-    {
         'echasnovski/mini.indentscope',
         version = '*',
         config = function()

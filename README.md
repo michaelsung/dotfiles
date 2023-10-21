@@ -7,7 +7,7 @@
 # Setup
 - clone to ~/.dotfiles
 - pull in git submodules
-- use stow to symlink dotfiles `stow alacritty neovim tmux zsh`
+- use stow to symlink dotfiles `stow alacritty helix neovim tmux zsh`
 - `CTRL+b` `I` to install tmux plugins
 
 # Troubleshooting
