@@ -5,6 +5,7 @@ line-number = "relative"
 cursorline = true
 color-modes = true
 bufferline = "always"
+auto-format = true
 
 [editor.cursor-shape]
 insert = "bar"
@@ -37,3 +38,32 @@ mode.select = "SELECT"
 
 [keys.normal]
 C-p = "file_picker"
+
+# [[language]]
+# name = "html"
+# formatter = { command = 'prettier', args = ["--parser", "html"] }
+
+# [[language]]
+# name = "json"
+# formatter = { command = 'prettier', args = ["--parser", "json"] }
+
+# [[language]]
+# name = "css"
+# formatter = { command = 'prettier', args = ["--parser", "css"] }
+
+# [[language]]
+# name = "javascript"
+# language-servers = ["eslint", "typescript-language-server"]
+# formatter = { command = 'prettier', args = ["--parser", "typescript"] }
+# auto-format = true
+
+# [[language]]
+# name = "typescript"
+# language-servers = ["eslint", "typescript-language-server"]
+# formatter = { command = 'prettier', args = ["--parser", "typescript"] }
+# auto-format = true
+
+# [[language]]
+# name = "tsx"
+# formatter = { command = 'prettier', args = ["--parser", "typescript"] }
+# auto-format = true
