@@ -33,9 +33,9 @@ left = ["mode", "spacer", "version-control", "spacer", "separator", "file-name"]
 center = []
 right = ["spinner", "diagnostics", "selections", "position-percentage", "file-encoding", "file-line-ending", "file-type"]
 separator = "│"
-mode.normal = "Normal"
-mode.insert = "Insert"
-mode.select = "Select"
+mode.normal = " Normal"
+mode.insert = " Insert"
+mode.select = " Select"
 
 [keys.normal]
 C-p = "file_picker"
