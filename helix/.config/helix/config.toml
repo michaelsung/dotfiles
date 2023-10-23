@@ -31,7 +31,15 @@ enable = true
 [editor.statusline]
 left = ["mode", "spacer", "version-control", "spacer", "separator", "file-name"]
 center = []
-right = ["spinner", "diagnostics", "selections", "position-percentage", "file-encoding", "file-line-ending", "file-type"]
+right = [
+  "spinner",
+  "diagnostics",
+  "selections",
+  "position-percentage",
+  "file-encoding",
+  "file-line-ending",
+  "file-type",
+]
 separator = "│"
 mode.normal = " Normal"
 mode.insert = " Insert"
