@@ -29,13 +29,13 @@ display-messages = true
 enable = true
 
 [editor.statusline]
-left = ["mode", "spacer", "spacer", "version-control", "spacer", "spacer", "file-name"]
+left = ["mode", "spacer", "version-control", "spacer", "separator", "file-name"]
 center = []
 right = ["spinner", "diagnostics", "selections", "position-percentage", "file-encoding", "file-line-ending", "file-type"]
 separator = "│"
-mode.normal = "NORMAL"
-mode.insert = "INSERT"
-mode.select = "SELECT"
+mode.normal = "Normal"
+mode.insert = "Insert"
+mode.select = "Select"
 
 [keys.normal]
 C-p = "file_picker"
