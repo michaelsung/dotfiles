@@ -12,13 +12,13 @@ formatter = { command = 'prettier', args = ["--parser", "css"] }
 
 [[language]]
 name = "javascript"
-language-servers = ["eslint", "typescript-language-server"]
+# language-servers = ["eslint", "typescript-language-server"]
 formatter = { command = 'prettier', args = ["--parser", "typescript"] }
 auto-format = true
 
 [[language]]
 name = "typescript"
-language-servers = ["eslint", "typescript-language-server"]
+# language-servers = ["eslint", "typescript-language-server"]
 formatter = { command = 'prettier', args = ["--parser", "typescript"] }
 auto-format = true
 
