@@ -8,7 +8,7 @@
 - clone to ~/.dotfiles
 - pull in git submodules
 - use stow to symlink dotfiles `stow alacritty helix neovim tmux zsh`
-- `CTRL+b` `I` to install tmux plugins
+- `CTRL+b` `Shift+I` to install tmux plugins
 
 # Troubleshooting
 Fixing backspace in tmux in macOS - https://stackoverflow.com/a/72596670
