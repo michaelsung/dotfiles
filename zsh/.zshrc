@@ -1,5 +1,9 @@
 # Golang path
 export PATH=$PATH:/usr/local/go/bin
+export PATH="$(go env GOPATH)/bin:$PATH"
+
+# lf env vars
+export EDITOR=hx
 
 # cheat.sh lookup - https://github.com/chubin/cheat.sh
 function cheat() { curl -m 7 "http://cheat.sh/$1"; }
