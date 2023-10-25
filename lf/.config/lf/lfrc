@@ -1,4 +1,8 @@
 set hidden true
+set mouse true
+set drawbox true
+set number true
+set relativenumber true
 
 # interpreter for shell commands
 set shell sh
