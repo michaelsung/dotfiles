@@ -1,3 +1,14 @@
+# Tools
+- **Terminal:** Alacritty
+- **Shell:** Zsh
+- **Editor:** Helix
+- **Multiplexer:** Zellij
+
+# Inactive
+- Neovim: Replaced with Helix
+- Tmux: Replaced with Zellij
+- lf: Replaced with Zellij: strider plugin
+
 # Dependencies
 - oh-my-zsh https://ohmyz.sh/#install
 - zsh-autosuggestions https://github.com/zsh-users/zsh-autosuggestions/blob/master/INSTALL.md#oh-my-zsh
