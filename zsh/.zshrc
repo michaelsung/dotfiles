@@ -8,6 +8,9 @@ export EDITOR=hx
 # cheat.sh lookup - https://github.com/chubin/cheat.sh
 function cheat() { curl -m 7 "http://cheat.sh/$1"; }
 
+# aliases
+alias lfs="lf -config ~/.dotfiles/lf/.config/lf/zellij-sidebar"
+
 # ZSH config below
 # -----------------------
 
