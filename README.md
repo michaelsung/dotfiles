@@ -3,11 +3,11 @@
 - **Shell:** Zsh
 - **Editor:** Helix
 - **Multiplexer:** Zellij
+- **File Manager:** lf
 
 # Inactive
 - Neovim: Replaced with Helix
 - Tmux: Replaced with Zellij
-- lf: Replaced with Zellij: strider plugin
 
 # Dependencies
 - oh-my-zsh https://ohmyz.sh/#install
@@ -18,8 +18,7 @@
 # Setup
 - clone to ~/.dotfiles
 - pull in git submodules
-- use stow to symlink dotfiles `stow alacritty helix neovim tmux zsh`
-- `CTRL+b` `Shift+I` to install tmux plugins
+- use stow to symlink dotfiles `stow alacritty helix lf zellij zsh`
 
 # Troubleshooting
 Fixing backspace in tmux in macOS - https://stackoverflow.com/a/72596670
