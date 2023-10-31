@@ -13,3 +13,4 @@ import:
   - ~/.config/alacritty/catppuccin/catppuccin-mocha.yml
 window:
   dynamic_title: false
+  option_as_alt: Both
