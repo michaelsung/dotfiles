@@ -1,13 +1,13 @@
 env:
   TERM: xterm-256color
 font:
-  size: 10.0
+  size: 12.0
   normal:
     family: JetBrainsMono Nerd Font
   offset:
-    y: 6
+    y: 0
   glyph_offset:
-    y: 3
+    y: 1
 import:
   - ~/AppData/Roaming/alacritty/catppuccin/catppuccin-mocha.yml
   - ~/.config/alacritty/catppuccin/catppuccin-mocha.yml
