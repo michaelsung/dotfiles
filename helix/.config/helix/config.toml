@@ -96,12 +96,12 @@ Y = [
 ]
 
 # Uncanny valley stuff, this makes w and b behave as they do Vim
-w = ["move_next_word_start", "move_char_right", "collapse_selection"]
-W = ["move_next_long_word_start", "move_char_right", "collapse_selection"]
-e = ["move_next_word_end", "collapse_selection"]
-E = ["move_next_long_word_end", "collapse_selection"]
-b = ["move_prev_word_start", "collapse_selection"]
-B = ["move_prev_long_word_start", "collapse_selection"]
+# w = ["move_next_word_start", "move_char_right", "collapse_selection"]
+# W = ["move_next_long_word_start", "move_char_right", "collapse_selection"]
+# e = ["move_next_word_end", "collapse_selection"]
+# E = ["move_next_long_word_end", "collapse_selection"]
+# b = ["move_prev_word_start", "collapse_selection"]
+# B = ["move_prev_long_word_start", "collapse_selection"]
 
 # If you want to keep the selection-while-moving behaviour of Helix, this two lines will help a lot,
 # especially if you find having text remain selected while you have switched to insert or append mode
