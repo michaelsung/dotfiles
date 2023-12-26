@@ -9,7 +9,7 @@ export EDITOR=hx
 function cheat() { curl -m 7 "http://cheat.sh/$1"; }
 
 # aliases
-alias lfs="lf -config ~/.dotfiles/lf/.config/lf/zellij-sidebar"
+alias lfs="lf -config ~/.config/lf/zellij-sidebar"
 
 # ZSH config below
 # -----------------------
@@ -86,7 +86,7 @@ HIST_STAMPS="dd/mm/yyyy"
 # Custom plugins may be added to $ZSH_CUSTOM/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
-plugins=(git command-not-found golang npm nvm ssh-agent sudo tmux common-aliases zsh-autosuggestions)
+plugins=(git command-not-found ssh-agent sudo zsh-autosuggestions)
 
 zstyle :omz:plugins:ssh-agent identities github
 
