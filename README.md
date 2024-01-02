@@ -4,14 +4,14 @@
 
 - **Terminal:** Kitty
 - **Shell:** Zsh
-- **Editor:** Helix
+- **Editor:** Neovim (LazyVim)
 - **Multiplexer:** Zellij
 - **File Manager:** lf
 
 ## Inactive
 
-- Alacritty: Replaced with Kitty, and using Windows Terminal when I'm on Windows
-- Neovim: Replaced with Helix
+- Alacritty: Replaced with Kitty, and using Windows Terminal when I'm on Windows. Kitty looks better when using an increased line height.
+- ~~Neovim: Replaced with Helix~~ Helix: Replaced with LazyVim
 - Tmux: Replaced with Zellij
 
 ## Dependencies
@@ -25,7 +25,7 @@
 
 - clone to ~/.dotfiles
 - pull in git submodules
-- use stow to symlink dotfiles `stow alacritty helix lf zellij zsh`
+- use stow to symlink dotfiles `stow alacritty neovim lf zellij zsh`
 
 ## Troubleshooting
 

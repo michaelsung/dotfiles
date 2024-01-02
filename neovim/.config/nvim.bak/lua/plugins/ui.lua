@@ -43,26 +43,6 @@ return {
         end
     },
     {
-        'echasnovski/mini.indentscope',
-        version = '*',
-        config = function()
-            local MiniIndentscope = require("mini.indentscope")
-            MiniIndentscope.setup({
-                options = {
-                    try_as_border = true,
-                },
-                draw = {
-                    animation = MiniIndentscope.gen_animation.quadratic({
-                        easing = 'out',
-                        duration = 80,
-                        unit = 'total'
-                    })
-                },
-                symbol = '│'
-            })
-        end
-    },
-    {
         'echasnovski/mini.starter',
         version = '*',
         config = function()

@@ -3,7 +3,7 @@ export PATH=$PATH:/usr/local/go/bin
 export PATH="$(go env GOPATH)/bin:$PATH"
 
 # lf env vars
-export EDITOR=hx
+export EDITOR=nvim
 
 # cheat.sh lookup - https://github.com/chubin/cheat.sh
 function cheat() { curl -m 7 "http://cheat.sh/$1"; }
@@ -121,3 +121,7 @@ export LANG=en_US.UTF-8
 # Example aliases
 # alias zshconfig="mate ~/.zshrc"
 # alias ohmyzsh="mate ~/.oh-my-zsh"
+
+export NVM_DIR="$HOME/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
