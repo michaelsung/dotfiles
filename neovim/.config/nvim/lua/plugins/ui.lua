@@ -24,10 +24,15 @@ return {
       "lewis6991/gitsigns.nvim",
     },
     opts = {
-      hide_if_all_visible = true,
+      hide_if_all_visible = false,
       handlers = {
         gitsigns = true,
       },
     },
   },
+  { "akinsho/bufferline.nvim", opts = {
+    options = {
+      always_show_bufferline = true,
+    },
+  } },
 }
