@@ -1,1 +1,0 @@
-vim.opt.autochdir = false
