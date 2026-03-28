@@ -4,6 +4,8 @@
 All Claude Code config is tracked in yadm. After adding/editing config files:
 `yadm add <file> && yadm commit -m "claude: <description>"`
 
+@~/.config/yadm/CLAUDE.md
+
 ## Safety Rules (enforced by safety-net + hookify plugins)
 - Never `git reset --hard`, `git push --force`, or `git stash clear` without explicit confirmation
 - Never `rm -rf` outside the current working directory
