@@ -1,4 +1,32 @@
 {
+  "permissions": {
+    "allow": [
+      "WebFetch(domain:api.anthropic.com)",
+      "WebFetch(domain:docs.anthropic.com)",
+      "WebFetch(domain:github.com)",
+      "WebFetch(domain:raw.githubusercontent.com)"
+    ],
+    "defaultMode": "default"
+  },
+  "enabledPlugins": {
+    "safety-net@cc-marketplace": true,
+    "claude-md-management@claude-plugins-official": true,
+    "hookify@claude-plugins-official": true
+  },
+  "extraKnownMarketplaces": {
+    "claude-plugins-official": {
+      "source": {
+        "source": "github",
+        "repo": "anthropics/claude-plugins-official"
+      }
+    },
+    "cc-marketplace": {
+      "source": {
+        "source": "github",
+        "repo": "kenryu42/cc-marketplace"
+      }
+    }
+  },
   "sandbox": {
     "enabled": true,
     "failIfUnavailable": false,
@@ -21,14 +49,5 @@
         "~/.config/gcloud"
       ]
     }
-  },
-  "permissions": {
-    "allow": [
-      "WebFetch(domain:api.anthropic.com)",
-      "WebFetch(domain:docs.anthropic.com)",
-      "WebFetch(domain:github.com)",
-      "WebFetch(domain:raw.githubusercontent.com)"
-    ],
-    "defaultMode": "default"
   }
 }
