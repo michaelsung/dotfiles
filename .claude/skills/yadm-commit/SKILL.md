@@ -22,17 +22,40 @@ yadm list
 yadm log --oneline -5
 ```
 
-Categorize findings:
-- **Modified tracked files** (`M` in status) — need to be committed
-- **Deleted tracked files** (`D` in status) — need to be committed (removal)
-- **Untracked files** (`?` in status) — candidates for first-time tracking; must be vetted before adding
+**Important:** yadm sets `status.showUntrackedFiles=no` by default because the working tree is `$HOME` — `yadm status` will never show `?` untracked files. Only modified (`M`) and deleted (`D`) tracked files appear. New files must be discovered separately in Step 2.
+
+Categorize status findings:
+- **Modified tracked files** (`M`) — need to be committed
+- **Deleted tracked files** (`D`) — need to be committed (removal)
 - **Already-staged changes** — incorporate into your plan
 
 ---
 
-## Step 2: Vet untracked files before adding
+## Step 2: Discover and vet new untracked files
 
-For every untracked file, assess whether it is safe to track in a **public** GitHub repo:
+Since `yadm status` does not reveal untracked files, discover candidates by comparing known dotfile locations against the `yadm list` output.
+
+**Get the list of already-tracked files:**
+```bash
+yadm list
+```
+
+**Scan known dotfile directories for files not yet tracked:**
+```bash
+# Check top-level dotfiles
+ls -a ~ | grep '^\.' | grep -v '^\.\.$'
+
+# Check common config dirs that may have new files
+find ~/.claude -type f 2>/dev/null
+find ~/.config/yadm -type f 2>/dev/null
+# Add other dirs relevant to what was created this session
+```
+
+Compare findings against `yadm list`. Any file present on disk but absent from `yadm list` is a candidate for first-time tracking.
+
+**Focus on files created or edited during the current session** — if the user or Claude created new config files (e.g., a new skill, a new tool config), those are the primary candidates. Do not trawl all of `$HOME`.
+
+**Vet each candidate before adding.** Assess whether it is safe to track in a **public** GitHub repo:
 
 **Reject immediately (do not add, warn the user):**
 - Anything under `~/.ssh/`, `~/.gnupg/`, `~/.aws/`, `~/.config/gcloud/`
