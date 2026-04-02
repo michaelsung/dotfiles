@@ -1,14 +1,13 @@
 {
   "version": 2,
   "plugins": {
-    "safety-net@cc-marketplace": [
+    "typescript-lsp@claude-plugins-official": [
       {
         "scope": "user",
-        "installPath": "/Users/miche/.claude/plugins/cache/cc-marketplace/safety-net/0.8.2",
-        "version": "0.8.2",
-        "installedAt": "2026-03-28T02:44:17.359Z",
-        "lastUpdated": "2026-03-28T02:44:17.359Z",
-        "gitCommitSha": "a8acf4db1c0d73964b51be6c4c125def2443da5d"
+        "installPath": "/Users/miche/.claude/plugins/cache/claude-plugins-official/typescript-lsp/1.0.0",
+        "version": "1.0.0",
+        "installedAt": "2026-03-30T01:27:05.783Z",
+        "lastUpdated": "2026-04-02T14:08:27.208Z"
       }
     ],
     "claude-md-management@claude-plugins-official": [
@@ -16,8 +15,8 @@
         "scope": "user",
         "installPath": "/Users/miche/.claude/plugins/cache/claude-plugins-official/claude-md-management/1.0.0",
         "version": "1.0.0",
-        "installedAt": "2026-03-28T02:44:17.543Z",
-        "lastUpdated": "2026-03-28T02:44:17.543Z"
+        "installedAt": "2026-04-01T12:02:27.471Z",
+        "lastUpdated": "2026-04-02T14:08:27.208Z"
       }
     ],
     "hookify@claude-plugins-official": [
@@ -25,8 +24,8 @@
         "scope": "user",
         "installPath": "/Users/miche/.claude/plugins/cache/claude-plugins-official/hookify/unknown",
         "version": "unknown",
-        "installedAt": "2026-03-28T02:44:17.735Z",
-        "lastUpdated": "2026-03-28T02:44:17.735Z"
+        "installedAt": "2026-04-01T12:02:27.471Z",
+        "lastUpdated": "2026-04-02T14:08:27.208Z"
       }
     ],
     "frontend-design@claude-plugins-official": [
@@ -34,18 +33,8 @@
         "scope": "user",
         "installPath": "/Users/miche/.claude/plugins/cache/claude-plugins-official/frontend-design/unknown",
         "version": "unknown",
-        "installedAt": "2026-03-29T08:23:11.881Z",
-        "lastUpdated": "2026-03-29T08:23:11.881Z"
-      }
-    ],
-    "superpowers@claude-plugins-official": [
-      {
-        "scope": "user",
-        "installPath": "/Users/miche/.claude/plugins/cache/claude-plugins-official/superpowers/5.0.6",
-        "version": "5.0.6",
-        "installedAt": "2026-03-29T08:23:45.212Z",
-        "lastUpdated": "2026-03-29T08:23:45.212Z",
-        "gitCommitSha": "eafe962b18f6c5dc70fb7c8cc7e83e61f4cdde06"
+        "installedAt": "2026-04-01T12:02:27.471Z",
+        "lastUpdated": "2026-04-02T14:08:27.208Z"
       }
     ],
     "context7@claude-plugins-official": [
@@ -53,8 +42,8 @@
         "scope": "user",
         "installPath": "/Users/miche/.claude/plugins/cache/claude-plugins-official/context7/unknown",
         "version": "unknown",
-        "installedAt": "2026-03-29T08:23:57.750Z",
-        "lastUpdated": "2026-03-29T08:23:57.750Z"
+        "installedAt": "2026-04-01T12:02:27.471Z",
+        "lastUpdated": "2026-04-02T14:08:27.208Z"
       }
     ],
     "code-simplifier@claude-plugins-official": [
@@ -62,17 +51,8 @@
         "scope": "user",
         "installPath": "/Users/miche/.claude/plugins/cache/claude-plugins-official/code-simplifier/1.0.0",
         "version": "1.0.0",
-        "installedAt": "2026-03-29T08:24:14.669Z",
-        "lastUpdated": "2026-03-29T08:24:14.669Z"
-      }
-    ],
-    "typescript-lsp@claude-plugins-official": [
-      {
-        "scope": "user",
-        "installPath": "/Users/miche/.claude/plugins/cache/claude-plugins-official/typescript-lsp/1.0.0",
-        "version": "1.0.0",
-        "installedAt": "2026-03-29T08:24:48.847Z",
-        "lastUpdated": "2026-03-29T08:24:48.847Z"
+        "installedAt": "2026-04-01T12:02:27.471Z",
+        "lastUpdated": "2026-04-02T14:08:27.208Z"
       }
     ],
     "skill-creator@claude-plugins-official": [
@@ -80,8 +60,8 @@
         "scope": "user",
         "installPath": "/Users/miche/.claude/plugins/cache/claude-plugins-official/skill-creator/unknown",
         "version": "unknown",
-        "installedAt": "2026-03-29T08:25:02.969Z",
-        "lastUpdated": "2026-03-29T08:25:02.969Z"
+        "installedAt": "2026-04-01T12:02:27.471Z",
+        "lastUpdated": "2026-04-02T14:08:27.208Z"
       }
     ],
     "security-guidance@claude-plugins-official": [
@@ -89,9 +69,19 @@
         "scope": "user",
         "installPath": "/Users/miche/.claude/plugins/cache/claude-plugins-official/security-guidance/unknown",
         "version": "unknown",
-        "installedAt": "2026-03-29T08:25:13.643Z",
-        "lastUpdated": "2026-03-29T08:25:13.643Z"
+        "installedAt": "2026-04-01T12:02:27.471Z",
+        "lastUpdated": "2026-04-02T14:08:27.208Z"
       }
     ],
+    "superpowers@claude-plugins-official": [
+      {
+        "scope": "user",
+        "installPath": "/Users/miche/.claude/plugins/cache/claude-plugins-official/superpowers/5.0.7",
+        "version": "5.0.7",
+        "installedAt": "2026-04-01T12:04:37.330Z",
+        "lastUpdated": "2026-04-02T14:08:27.208Z",
+        "gitCommitSha": "dd237283dbfe466e11bd4be55acf14ecb8f6636e"
+      }
+    ]
   }
 }
