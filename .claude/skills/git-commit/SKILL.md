@@ -20,6 +20,23 @@ git log --oneline -5
 
 From `git status`, note any untracked files that should be committed (new files not yet tracked).
 
+## Step 1b: Audit for files that should be gitignored
+
+Before staging anything, scan the untracked files from `git status` for items that should not be committed. Flag any of the following to the user and do **not** stage them:
+
+- Secrets and credentials: `.env`, `.env.*`, `*.pem`, `*.key`, `*_rsa`, `*_dsa`, `*.p12`, `*.pfx`, `credentials.*`, `secrets.*`, `auth.json`, `token*`
+- Build output and caches: `dist/`, `build/`, `out/`, `.next/`, `.nuxt/`, `__pycache__/`, `*.pyc`, `*.pyo`, `node_modules/`, `.cache/`, `.parcel-cache/`
+- IDE and OS noise: `.DS_Store`, `Thumbs.db`, `.idea/`, `.vscode/` (unless the repo intentionally tracks shared editor config)
+- Logs and temp files: `*.log`, `npm-debug.log*`, `*.tmp`, `*.temp`, `*.swp`
+- Large binary or data files that look accidental: `*.zip`, `*.tar.gz`, `*.sqlite`, `*.db`
+
+For each flagged file:
+1. Tell the user what you found and why it looks like it should be ignored
+2. Ask whether to add it to `.gitignore` before proceeding
+3. If yes, append it to `.gitignore` (create the file if it doesn't exist), then stage and include `.gitignore` in the relevant commit
+
+If nothing suspicious is found, proceed silently to Step 2.
+
 ## Step 2: Analyze and group changes
 
 Read the full diff. Group files into logical commits — each commit should represent one coherent intent.
