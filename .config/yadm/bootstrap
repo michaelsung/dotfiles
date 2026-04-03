@@ -25,8 +25,7 @@ for plugin in \
   "context7" \
   "code-simplifier" \
   "skill-creator" \
-  "security-guidance" \
-  "superpowers"; do
+  "security-guidance"; do
   claude plugin install "${plugin}@claude-plugins-official" 2>/dev/null \
     || echo "${plugin} already installed"
 done
