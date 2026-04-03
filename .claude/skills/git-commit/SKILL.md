@@ -5,7 +5,7 @@ description: Analyze unstaged/untracked changes, group them into logically separ
 
 # Smart Git Commit
 
-Your job is to turn all current unstaged and untracked changes into a well-organized sequence of commits, each following the Conventional Commits standard. Splitting is at the **file level only** — never attempt partial-file staging. Work autonomously — don't ask for approval before committing. Ask before pushing.
+Your job is to turn all current unstaged and untracked changes into a well-organized sequence of commits, each following the Conventional Commits standard. Splitting is at the **file level only** — never attempt partial-file staging. Work autonomously — don't ask for approval before committing. Never ask about pushing.
 
 ## Step 1: Read the full workspace state
 
@@ -106,13 +106,13 @@ git status           # should show nothing uncommitted
 
 If any changes remain uncommitted, report them to the user rather than silently leaving them behind.
 
-Then show a summary and ask about pushing:
+Then show a summary:
 
 ```bash
 git log --oneline HEAD~<N>..HEAD
 ```
 
-"N commits created. Push to `<branch>` on `<remote>`?" — only push if confirmed.
+Do not ask about pushing — the user will handle that manually.
 
 ## Common edge cases
 
