@@ -1,5 +1,5 @@
 ---
-name: git-smart-commit
+name: git-commit
 description: Analyze unstaged/untracked changes, group them into logically separate commits, and commit each group with a Conventional Commits message. Use this skill whenever the user wants to commit their work — "commit my changes", "commit everything", "create commits", "stage and commit", or just "done, commit this". Also trigger when the user finishes a session and wants to wrap up with git commits, even if they phrase it casually. Do NOT trigger when changes are already staged and the user only wants a commit message written — that's a simpler task that doesn't need this skill.
 ---
 
