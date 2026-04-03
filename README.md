@@ -17,7 +17,8 @@ Personal dotfiles managed with [yadm](https://yadm.io) (Yet Another Dotfiles Man
 
 ```sh
 # 1. Install yadm
-brew install yadm   # macOS
+brew install yadm        # macOS
+sudo apt install yadm    # Linux (Debian/Ubuntu)
 # or: https://yadm.io/docs/install
 
 # 2. Clone the repo (checks out files directly into $HOME)
