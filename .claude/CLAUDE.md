@@ -20,7 +20,7 @@ All Claude Code config is tracked in yadm. After adding/editing config files:
 - **playwright**: Available for browser automation, web scraping, and UI testing
 
 ## TypeScript Checks
-- Use `mcp__ide__getDiagnostics` (LSP) instead of `npx tsc --noEmit` to verify TypeScript correctness after edits
+- Use `npx tsc --noEmit` to verify TypeScript correctness after edits
 
 ## Specs
 - After writing a spec, always display the full content inline in the chat — never ask the user to open the file
