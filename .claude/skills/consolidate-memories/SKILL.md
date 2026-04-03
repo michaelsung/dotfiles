@@ -10,10 +10,10 @@ Scan all project memory files, identify `user` and `feedback` entries not alread
 ## Step 1: Discover memory files
 
 Use Glob to find all memory files:
-- Pattern: `~/.claude/projects/*/memory/*.md`
-- Exclude any file named `MEMORY.md`
+- Pattern: `/Users/miche/.claude/projects/*/memory/*.md` (substitute your home directory path on other machines)
+- Exclude any file named `MEMORY.md` (these are index files, not individual memory entries)
 
-Read each matching file. Parse the frontmatter (between `---` delimiters). Keep only files where `type` is `user` or `feedback`.
+Read each matching file. Parse the frontmatter (between `---` delimiters). Keep only files where `type` is `user` or `feedback`. If a file has no frontmatter or is missing the `type` field, skip it.
 
 ## Step 2: Read global CLAUDE.md
 
@@ -30,6 +30,8 @@ For each candidate memory file, judge whether its substance is already covered i
 **Not covered** means the CLAUDE.md has nothing expressing this:
 - Memory: "user prefers single bundled PRs for refactors" / CLAUDE.md has no PR strategy → **include**
 - Memory: "don't mock the database in tests" / CLAUDE.md has nothing about testing → **include**
+
+When in doubt, include the item — the user will review it before anything is written.
 
 Build a list of genuinely new items only.
 
