@@ -1,4 +1,8 @@
 {
+  "statusLine": {
+    "type": "command",
+    "command": "/Users/miche/.claude/statusline.sh"
+  },
   "permissions": {
     "allow": [
       "WebFetch(domain:api.anthropic.com)",
