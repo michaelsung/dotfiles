@@ -17,7 +17,16 @@ claude plugin install safety-net@cc-marketplace 2>/dev/null \
 
 # Official plugins
 echo "--- Official plugins ---"
-for plugin in "claude-md-management" "hookify"; do
+for plugin in \
+  "claude-md-management" \
+  "hookify" \
+  "typescript-lsp" \
+  "frontend-design" \
+  "context7" \
+  "code-simplifier" \
+  "skill-creator" \
+  "security-guidance" \
+  "superpowers"; do
   claude plugin install "${plugin}@claude-plugins-official" 2>/dev/null \
     || echo "${plugin} already installed"
 done
