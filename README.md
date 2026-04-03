@@ -31,6 +31,7 @@ The bootstrap script installs Claude Code plugins and configures the Playwright 
 
 ### Prerequisites
 
+- [zsh](https://www.zsh.org/) — expected shell (set as default: `chsh -s $(which zsh)`)
 - [Claude Code](https://claude.ai/code) (`npm install -g @anthropic-ai/claude-code`)
 - [nvm](https://github.com/nvm-sh/nvm) (for Node version management; provides `node` and `npx`)
 - [jq](https://jqlang.github.io/jq/) (`brew install jq` / `apt install jq`) — required by `.claude/statusline.sh` for JSON parsing
