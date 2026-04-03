@@ -1,8 +1,4 @@
 {
-  "statusLine": {
-    "type": "command",
-    "command": "/Users/miche/.claude/statusline.sh"
-  },
   "permissions": {
     "allow": [
       "WebFetch(domain:api.anthropic.com)",
@@ -11,6 +7,10 @@
       "WebFetch(domain:raw.githubusercontent.com)"
     ],
     "defaultMode": "default"
+  },
+  "statusLine": {
+    "type": "command",
+    "command": "$HOME/.claude/statusline.sh"
   },
   "enabledPlugins": {
     "safety-net@cc-marketplace": true,
