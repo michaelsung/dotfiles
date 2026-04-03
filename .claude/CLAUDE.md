@@ -18,3 +18,15 @@ All Claude Code config is tracked in yadm. After adding/editing config files:
 
 ## MCP
 - **playwright**: Available for browser automation, web scraping, and UI testing
+
+## TypeScript Checks
+- Use `mcp__ide__getDiagnostics` (LSP) instead of `npx tsc --noEmit` to verify TypeScript correctness after edits
+
+## Specs
+- After writing a spec, always display the full content inline in the chat — never ask the user to open the file
+
+## Plan Execution
+- After writing a plan, skip "which approach?" and immediately invoke the `superpowers:subagent-driven-development` skill
+
+## Dev Servers
+- Tell the user to run `! <command>` in the prompt to start dev servers — do not use the Bash tool for this
