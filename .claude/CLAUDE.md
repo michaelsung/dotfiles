@@ -30,3 +30,7 @@ All Claude Code config is tracked in yadm. After adding/editing config files:
 
 ## Dev Servers
 - Tell the user to run `! <command>` in the prompt to start dev servers — do not use the Bash tool for this
+
+## Generic Working Directory
+- `~/projects/claude-generic-working-dir` is a scratch space for adjusting Claude Code settings or dotfile config
+- Use it when files need to be created outside of a temp directory
