@@ -141,13 +141,32 @@ Also check for files that should never be in a public repo:
 yadm list | grep -i -e "\.pem$" -e "\.key$" -e "\.p12$" -e "id_rsa" -e "id_ed25519" -e "\.env$" -e "credentials$" -e "secrets\."
 ```
 
+Also scan for any information that would be undesirable in a public repository. The main risks in dotfiles are:
+- **Hardcoded absolute paths** revealing the local username (e.g. `/Users/yourname/`, `/home/yourname/`)
+- **Hostnames / device names** (e.g. `MacBook-Pro-3.local`, output of `hostname`)
+- **Real contact info** accidentally pasted into a config (full name, phone number, street address)
+
+Run a targeted scan using the actual username and hostname:
+
+```bash
+UNAME=$(whoami)
+HNAME=$(hostname)
+yadm list | xargs -I{} grep -l \
+  -e "/Users/$UNAME/" \
+  -e "/home/$UNAME/" \
+  -e "$HNAME" \
+  -- "$HOME/{}" 2>/dev/null || true
+```
+
+For any hits, read the flagged lines. Hardcoded paths and hostnames in dotfiles are often intentional (e.g. a machine-specific config) — confirm with the user before treating them as blockers. Only halt the push if the content is clearly sensitive (e.g. a real phone number or street address accidentally pasted in).
+
 **If any hits are found:**
 - Show the user exactly which files and lines triggered the match
 - Do NOT push
 - Advise how to remediate: either remove the file from tracking (`yadm rm --cached <file>`) or redact the sensitive value
 - Add the file to `~/.gitignore_global` or a yadm-specific exclude
 
-**If the audit is clean:** confirm "Audit passed — no secrets detected in tracked files."
+**If the audit is clean:** confirm "Audit passed — no secrets or PII detected in tracked files."
 
 ---
 
