@@ -19,11 +19,11 @@ precmd() {
 }
 
 # format vcs_info variable
-zstyle ':vcs_info:git:*' formats ':%F{green}%b%f'
+zstyle ':vcs_info:git:*' formats ' / %F{green}%b%f'
 
 # set up the prompt
 setopt PROMPT_SUBST
-PROMPT='%F{yellow}%m%f:%F{blue}%~%f${vcs_info_msg_0_}${git_sync_status} $ '
+PROMPT='%F{yellow}%m%f / %F{blue}%~%f${vcs_info_msg_0_}${git_sync_status:+ }${git_sync_status} $ '
 
 # Claude Code safety-net
 export SAFETY_NET_STRICT=1        # Fail-closed on unparseable commands
