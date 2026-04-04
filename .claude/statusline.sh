@@ -9,10 +9,10 @@ if [ -n "$RESET_AT" ]; then
 fi
 SESSION_PCT=$(echo "$INPUT" | jq -r '.rate_limits.five_hour.used_percentage // 0 | floor | tostring')
 CTX_PCT=$(echo "$INPUT" | jq -r '.context_window.used_percentage // 0 | floor | tostring')
-USAGE="Session: ${SESSION_PCT}%${RESET_STR} | Ctx: ${CTX_PCT}%"
+USAGE="Session: ${SESSION_PCT}%${RESET_STR} · Ctx: ${CTX_PCT}%"
 
 if [ -n "$SAFETY" ]; then
-  echo "$SAFETY | $USAGE"
+  echo "$SAFETY · $USAGE"
 else
   echo "$USAGE"
 fi
