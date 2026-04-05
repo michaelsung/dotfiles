@@ -11,8 +11,15 @@ SESSION_PCT=$(echo "$INPUT" | jq -r '.rate_limits.five_hour.used_percentage // 0
 CTX_PCT=$(echo "$INPUT" | jq -r '.context_window.used_percentage // 0 | floor | tostring')
 USAGE="Session: ${SESSION_PCT}%${RESET_STR} · Ctx: ${CTX_PCT}%"
 
-if [ -n "$SAFETY" ]; then
-  echo "$SAFETY · $USAGE"
+DOCKER_PREFIX=""
+if [ -n "$CLAUDE_DOCKER" ]; then
+  DOCKER_PREFIX="🐳 ${CLAUDE_DOCKER_NAME:-docker} | "
 else
-  echo "$USAGE"
+  DOCKER_PREFIX="🖥️ uncontained | "
+fi
+
+if [ -n "$SAFETY" ]; then
+  echo "${DOCKER_PREFIX}$SAFETY | $USAGE"
+else
+  echo "${DOCKER_PREFIX}$USAGE"
 fi
