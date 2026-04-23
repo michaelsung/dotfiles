@@ -42,7 +42,8 @@
         "api.anthropic.com",
         "docs.anthropic.com",
         "mcp.context7.com"
-      ]
+      ],
+      "allowAllUnixSockets": true
     },
     "filesystem": {
       "allowRead": [

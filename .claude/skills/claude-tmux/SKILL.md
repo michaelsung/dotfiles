@@ -1,31 +1,30 @@
 ---
 name: claude-tmux
-description: Run processes in visible tmux panes alongside Claude's own pane, instead of blocking the shell or hiding output via run_in_background. Use `spawn` for long-lived processes the user will want to watch (dev servers, watchers, tail -f, docker logs) — these go in a bottom strip under Claude's pane. Use `oneshot` for short commands whose output is worth glancing at — these appear in a right-side rail that auto-closes 10 seconds after the command finishes. Trigger on phrases like "run the dev server", "start the backend", "spin up", "in the background but visibly", or any request to launch a process the user will want to see while Claude keeps working. Do NOT trigger for trivial reads Claude does itself (ls, grep, cat) or for build/test/lint runs where Claude needs the exit code synchronously.
+description: Spawn long-lived processes in a visible tmux pane below Claude's own pane, instead of blocking the shell or hiding output via run_in_background. Use for dev servers, file watchers, tail -f, docker logs -f, message consumers — anything the user will want to watch over time while Claude keeps working. Trigger on phrases like "run the dev server", "start the backend", "spin up", "start it in the background but visibly", or any request to launch a process the user will want to see live. Do NOT trigger for build/test/lint runs where Claude needs the exit code synchronously, or for trivial reads Claude does itself (ls, grep, cat).
 tools: Bash
 ---
 
 # claude-tmux
 
-This skill lets Claude split its tmux window into purpose-specific panes so the user can *see* what Claude is running, instead of backgrounding processes where they'd be invisible.
+This skill lets Claude put long-lived processes into a tmux pane below its own, so the user can *see* what's running instead of it being invisible in the background.
 
 Helper script: `~/.claude/skills/claude-tmux/scripts/tmux-pane.sh`
 
 ## Layout model
 
 ```
-+----------------------+--------+
-| Claude (top-left)    | one-   |
-|                      | shot   |
-+---+---+---+          | rail   |
-| A | B | C |          | (auto  |
-+---+---+---+----------+ closes)+
++-------------------------------+
+| Claude (top)                  |
+|                               |
++---+---+---+-------------------+
+| A | B | C |
++---+---+---+
    bottom strip (long-lived)
 ```
 
-- **Bottom strip** (25% tall, below Claude): one or more long-lived panes, tiled horizontally. Use `spawn`.
-- **Right rail** (20% wide, full window height): a single transient pane for short commands. Use `oneshot`. Auto-closes 10s after the command finishes.
+The first `spawn` takes 25% of height off the bottom of Claude's pane. Subsequent `spawn`s split the strip horizontally and equalize widths.
 
-Pane identity is a slug (e.g. `frontend`, `api`) stored in the pane title as `mgmt:<slug>`. The rail uses the reserved slug `oneshot`.
+Pane identity is a slug (e.g. `frontend`, `api`) stored in the pane title as `mgmt:<slug>`.
 
 ## Preflight
 
@@ -54,19 +53,6 @@ First call: splits 25% off the bottom of Claude's pane. Subsequent calls: split 
 
 **Exit behavior**: Panes set `remain-on-exit on`, so when the process dies the pane stays with its output visible. This is deliberate — you can `capture` the crash. Use `kill` to remove the pane.
 
-## oneshot — short visible commands
-
-Use for commands that run in seconds-to-tens-of-seconds and whose output is worth showing: running a user-written script, probing a service, verifying a config change.
-
-    ~/.claude/skills/claude-tmux/scripts/tmux-pane.sh oneshot -- 'curl -s localhost:3000/health | jq .'
-    ~/.claude/skills/claude-tmux/scripts/tmux-pane.sh oneshot -- 'bash run-integration-tests.sh'
-
-The rail is recycled — a new `oneshot` kills any existing rail pane first. The pane auto-closes 10s after the command finishes.
-
-**Do NOT use `oneshot` for**:
-- Commands Claude needs the exit code or output of programmatically (builds, tests, lints, greps) — use plain Bash so the result comes back to Claude.
-- Trivial reads Claude is doing (`ls`, `cat`, version checks) — they clutter the rail.
-
 ## Interacting with managed panes
 
 List all managed panes (pane_id, title, running command):
@@ -81,7 +67,7 @@ Send a line of input (appends Enter automatically):
 
     ~/.claude/skills/claude-tmux/scripts/tmux-pane.sh send --label api -- 'reload'
 
-Kill a pane (bottom-strip panes re-equalize afterward):
+Kill a pane (remaining strip panes re-equalize afterward):
 
     ~/.claude/skills/claude-tmux/scripts/tmux-pane.sh kill --label api
 
@@ -97,12 +83,10 @@ For special keys (Ctrl-C, arrow keys), use `tmux send-keys` directly with a pane
     # wait ~2s for bind
     capture --label dev --lines 40
 
-**Frontend + backend + a quick health probe:**
+**Frontend + backend running side by side:**
 
     spawn --label web -- 'npm run dev'
     spawn --label api -- 'uvicorn app:app --reload'
-    # ...after giving them a moment to start...
-    oneshot -- 'curl -s localhost:8000/health && echo && curl -sI localhost:3000'
 
 **Interactive shell pane for ad-hoc commands:**
 
