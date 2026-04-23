@@ -162,7 +162,7 @@ Flag any match against these patterns as a blocker — they contain auth tokens,
 | `.claude/debug/**`, `.claude/logs/**` | Runtime logs |
 | `.claude/__store.db*` | Local state DB |
 
-Intentionally-tracked `.claude/` paths are limited to: `settings.json`, `CLAUDE.md`, `commands/**`, `skills/**`, `agents/**`, `hooks/**`, `output-styles/**`, `plugins/config.json`, `keybindings.json`. Anything else under `.claude/` should be justified before tracking.
+Intentionally-tracked `.claude/` paths are limited to: `settings.json`, `CLAUDE.md`, `statusline.sh`, `commands/**`, `skills/**`, `agents/**`, `hooks/**`, `output-styles/**`, `plugins/config.json`, `keybindings.json`. Anything else under `.claude/` should be justified before tracking.
 
 If a flagged file is found, halt and advise:
 ```bash

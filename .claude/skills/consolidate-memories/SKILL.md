@@ -10,7 +10,7 @@ Scan all project memory files, identify `user` and `feedback` entries not alread
 ## Step 1: Discover memory files
 
 Use Glob to find all memory files:
-- Pattern: `/Users/miche/.claude/projects/*/memory/*.md` (substitute your home directory path on other machines)
+- Pattern: `$HOME/.claude/projects/*/memory/*.md`
 - Exclude any file named `MEMORY.md` (these are index files, not individual memory entries)
 
 Read each matching file. Parse the frontmatter (between `---` delimiters). Keep only files where `type` is `user` or `feedback`. If a file has no frontmatter or is missing the `type` field, skip it.
