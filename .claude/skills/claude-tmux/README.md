@@ -18,16 +18,29 @@ A Claude Code skill that lets Claude put long-lived processes (dev servers, watc
 
 ## Install
 
-From inside this repo:
+Claude auto-discovers skills under `~/.claude/skills/`. Drop this directory there:
 
 ```sh
-ln -s "$PWD" ~/.claude/skills/claude-tmux
-chmod +x scripts/tmux-pane.sh
+# From wherever you checked the skill out:
+cp -R claude-tmux ~/.claude/skills/
+chmod +x ~/.claude/skills/claude-tmux/scripts/tmux-pane.sh
 ```
 
-Or copy instead of symlink if you prefer. Claude auto-discovers skills under `~/.claude/skills/`; no further registration needed. Restart Claude after installing so the skill shows up in the in-session skill list.
+Symlinking works too (`ln -s "$PWD/claude-tmux" ~/.claude/skills/`). Restart Claude after installing so the skill shows up in the in-session skill list.
 
 Claude must be launched from inside a tmux session (`$TMUX` must be set). If not, the skill asks the user to either reopen Claude in tmux or proceed without the skill — it does not silently fall back.
+
+### Sandbox note (Linux)
+
+If you run Claude Code with `sandbox.enabled: true`, the helper's calls to tmux will fail with `error connecting to /tmp/tmux-<uid>/default (Operation not permitted)` because seccomp blocks Unix-socket connects by default. Add this to `~/.claude/settings.json` so spawn/list/send/capture/kill can reach the tmux server:
+
+```json
+"sandbox": {
+  "network": { "allowAllUnixSockets": true }
+}
+```
+
+On Linux, socket allowlisting by path isn't possible (seccomp can't filter `connect()` paths), so this is all-or-nothing. macOS users can use `sandbox.network.allowUnixSockets: ["/tmp/tmux-*/*"]` instead.
 
 ## Verbs
 
