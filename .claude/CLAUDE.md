@@ -18,15 +18,10 @@ All Claude Code config is tracked in yadm. After adding/editing config files:
 
 ## MCP
 - **playwright**: Available for browser automation, web scraping, and UI testing
-
-## TypeScript Checks
-- Use `npx tsc --noEmit` to verify TypeScript correctness after edits
+- **context7**: Prefer over WebFetch for library/framework/SDK documentation lookups
 
 ## Specs
 - After writing a spec, always display the full content inline in the chat — never ask the user to open the file
-
-## Dev Servers
-- Tell the user to run `! <command>` in the prompt to start dev servers — do not use the Bash tool for this
 
 ## Generic Working Directory
 - `~/projects/claude-generic-working-dir` is a scratch space for adjusting Claude Code settings or dotfile config
