@@ -35,8 +35,7 @@ yadm list
 The bootstrap script lives at `~/.config/yadm/bootstrap`. It is idempotent — safe to re-run. It installs:
 
 - Claude Code plugin marketplaces (`anthropics/claude-plugins-official`, `kenryu42/cc-marketplace`)
-- Plugins: `safety-net`, `claude-md-management`, `hookify`
-- Playwright MCP server (user scope, stored in `~/.claude.json` — not yadm-tracked)
+- Plugins: `safety-net`, `claude-md-management`, `frontend-design`, `context7`, `code-simplifier`, `skill-creator`, `security-guidance`
 
 ## What is NOT tracked by yadm
 
