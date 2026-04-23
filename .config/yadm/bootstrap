@@ -19,8 +19,6 @@ claude plugin install safety-net@cc-marketplace 2>/dev/null \
 echo "--- Official plugins ---"
 for plugin in \
   "claude-md-management" \
-  "hookify" \
-  "typescript-lsp" \
   "frontend-design" \
   "context7" \
   "code-simplifier" \
@@ -29,15 +27,6 @@ for plugin in \
   claude plugin install "${plugin}@claude-plugins-official" 2>/dev/null \
     || echo "${plugin} already installed"
 done
-
-# Playwright MCP (user scope — stored in ~/.claude.json, not yadm-tracked)
-echo "--- Playwright MCP ---"
-if ! claude mcp list 2>/dev/null | grep -q "playwright"; then
-  claude mcp add playwright npx @playwright/mcp@latest --scope user
-  echo "Playwright MCP added"
-else
-  echo "Playwright MCP already configured"
-fi
 
 echo ""
 echo "=== Bootstrap complete ==="
