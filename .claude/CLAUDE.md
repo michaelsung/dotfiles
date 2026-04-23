@@ -6,7 +6,7 @@ All Claude Code config is tracked in yadm. After adding/editing config files:
 
 @~/.config/yadm/CLAUDE.md
 
-## Safety Rules (enforced by safety-net + hookify plugins)
+## Safety Rules (enforced by safety-net plugin)
 - Never `git reset --hard`, `git push --force`, or `git stash clear` without explicit confirmation
 - Never `rm -rf` outside the current working directory
 - For unattended runs: surface filesystem/permission blockers rather than working around them
@@ -17,7 +17,6 @@ All Claude Code config is tracked in yadm. After adding/editing config files:
 - Run `claude-md-improver` skill periodically to audit CLAUDE.md quality
 
 ## MCP
-- **playwright**: Available for browser automation, web scraping, and UI testing
 - **context7**: Prefer over WebFetch for library/framework/SDK documentation lookups
 
 ## Specs
