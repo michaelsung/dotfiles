@@ -141,6 +141,35 @@ Also check for files that should never be in a public repo:
 yadm list | grep -i -e "\.pem$" -e "\.key$" -e "\.p12$" -e "id_rsa" -e "id_ed25519" -e "\.env$" -e "credentials$" -e "secrets\."
 ```
 
+**Audit tracked `.claude/` files specifically.** The `.claude/` tree mixes intentionally-tracked config (settings, skills, CLAUDE.md) with machine-local state that must never be pushed to a public repo. Run:
+
+```bash
+yadm list | grep '^\.claude/'
+```
+
+Flag any match against these patterns as a blocker — they contain auth tokens, conversation transcripts, or machine-local runtime state:
+
+| Pattern | Why it must not be tracked |
+|---------|----------------------------|
+| `.claude/.credentials.json` | OAuth/API credentials |
+| `.claude.json` | User-scope MCP config, may contain API keys — explicitly excluded per `~/.config/yadm/CLAUDE.md` |
+| `.claude/projects/**` | Full conversation transcripts — private, may contain secrets pasted into prompts |
+| `.claude/todos/**` | Session task state with conversation context |
+| `.claude/shell-snapshots/**` | Captured shell env, may include exported secrets |
+| `.claude/history.jsonl` (or `*history*`) | Prompt history |
+| `.claude/statsig/**` | Telemetry/session identifiers |
+| `.claude/ide/**` | IDE session lockfiles |
+| `.claude/debug/**`, `.claude/logs/**` | Runtime logs |
+| `.claude/__store.db*` | Local state DB |
+
+Intentionally-tracked `.claude/` paths are limited to: `settings.json`, `CLAUDE.md`, `commands/**`, `skills/**`, `agents/**`, `hooks/**`, `output-styles/**`, `plugins/config.json`, `keybindings.json`. Anything else under `.claude/` should be justified before tracking.
+
+If a flagged file is found, halt and advise:
+```bash
+yadm rm --cached <path>
+echo "<path>" >> ~/.config/yadm/gitignore   # or ~/.gitignore_global
+```
+
 Also scan for any information that would be undesirable in a public repository. The main risks in dotfiles are:
 - **Hardcoded absolute paths** revealing the local username (e.g. `/Users/yourname/`, `/home/yourname/`)
 - **Hostnames / device names** (e.g. `MacBook-Pro-3.local`, output of `hostname`)
