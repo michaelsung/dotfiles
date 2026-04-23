@@ -24,18 +24,11 @@ yadm list
 
 | Prefix | Use for |
 |--------|---------|
-| `claude:` | `.claude/` files (settings, skills, CLAUDE.md) |
+| `claude:` | `.claude/` files (settings, skills) |
 | `zsh:` | `.zshrc` |
 | `tmux:` | `.tmux.conf` |
-| `yadm:` | `.config/yadm/bootstrap`, this file |
+| `yadm:` | `.config/yadm/` files |
 | `add:` | First commit of a newly tracked file |
-
-## Bootstrap
-
-The bootstrap script lives at `~/.config/yadm/bootstrap`. It is idempotent — safe to re-run. It installs:
-
-- Claude Code plugin marketplaces (`anthropics/claude-plugins-official`, `kenryu42/cc-marketplace`)
-- Plugins: `safety-net`, `claude-md-management`, `frontend-design`, `context7`, `code-simplifier`, `skill-creator`, `security-guidance`
 
 ## What is NOT tracked by yadm
 

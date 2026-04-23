@@ -11,11 +11,6 @@ All Claude Code config is tracked in yadm. After adding/editing config files:
 - Never `rm -rf` outside the current working directory
 - For unattended runs: surface filesystem/permission blockers rather than working around them
 
-## Documentation Maintenance
-- Use the `update-docs` skill to update README and other repo docs
-- Run `/revise-claude-md` at session end when project patterns were discovered
-- Run `claude-md-improver` skill periodically to audit CLAUDE.md quality
-
 ## MCP
 - **context7**: Prefer over WebFetch for library/framework/SDK documentation lookups
 
