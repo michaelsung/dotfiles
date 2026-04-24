@@ -1,6 +1,6 @@
 ---
 name: claude-tmux
-description: Spawn long-lived processes in a visible tmux pane below Claude's own pane, instead of blocking the shell or hiding output via run_in_background. Use for dev servers, file watchers, tail -f, docker logs -f, message consumers — anything the user will want to watch over time while Claude keeps working. Trigger on phrases like "run the dev server", "start the backend", "spin up", "start it in the background but visibly", or any request to launch a process the user will want to see live. Do NOT trigger for build/test/lint runs where Claude needs the exit code synchronously, or for trivial reads Claude does itself (ls, grep, cat).
+description: Spawn or inspect long-lived processes in visible tmux panes below Claude's own pane, instead of blocking the shell or hiding output via run_in_background. SPAWN for dev servers, file watchers, tail -f, docker logs -f, message consumers — anything the user will want to watch over time (trigger phrases like "run the dev server", "start the backend", "spin up", "start it in the background but visibly"). INSPECT (via list + capture) when the user references or reports issues with something already running in a pane — they're pointing Claude at output that's visible to them but not in the conversation (trigger phrases like "check the [X] pane", "what's in the tmux pane", "errors in the panes", "the dev server is failing", "getting issues from my dev server"). Do NOT trigger for build/test/lint runs where Claude needs the exit code synchronously, or for trivial reads Claude does itself (ls, grep, cat).
 tools: Bash
 ---
 
@@ -13,18 +13,19 @@ Helper script: `~/.claude/skills/claude-tmux/scripts/tmux-pane.sh`
 ## Layout model
 
 ```
-+-------------------------------+
-| Claude (top)                  |
-|                               |
-+---+---+---+-------------------+
-| A | B | C |
-+---+---+---+
-   bottom strip (long-lived)
++------------------+------------------+
+| Claude           | nvim editor      |
+|                  | (mgmt:editor)    |
++------------------+------------------+
+| A   |   B   |   C  (full width)    |
++-------------------------------------+
+        bottom strip (long-lived)
 ```
 
-The first `spawn` takes 25% of height off the bottom of Claude's pane. Subsequent `spawn`s split the strip horizontally and equalize widths.
+- **Bottom strip** — long-lived processes. First `spawn` takes 25% of height off the window (full width, via `-f`); subsequent `spawn`s split the strip horizontally and equalize widths. Always spans the full window width, regardless of whether the editor pane is open.
+- **Editor mirror** — a single persistent nvim pane on the right half of Claude's row, labeled `mgmt:editor`. Driven automatically by the `PostToolUse` hook; reserved slug.
 
-Pane identity is a slug (e.g. `frontend`, `api`) stored in the pane title as `mgmt:<slug>`.
+Pane identity is a slug (e.g. `frontend`, `api`) stored in the pane title as `mgmt:<slug>`. The slug `editor` is reserved.
 
 ## Preflight
 
@@ -75,6 +76,23 @@ For special keys (Ctrl-C, arrow keys), use `tmux send-keys` directly with a pane
 
     tmux send-keys -t %42 C-c
 
+## Edit mirror (automatic)
+
+After every `Edit`, `Write`, `MultiEdit`, or `NotebookEdit` tool call, a `PostToolUse` hook (`scripts/edit-hook.sh`) calls:
+
+    ~/.claude/skills/claude-tmux/scripts/tmux-pane.sh edit-show --file <abs-path>
+
+Behavior:
+
+- First edit: splits Claude's pane vertically (right 50%) and launches `nvim --listen <sock> <file>`. Pane title becomes `mgmt:editor`.
+- Subsequent edits: `nvim --server <sock> --remote <file>` opens the file as a new buffer in the same nvim and focuses it. `:ls` inside nvim shows the history of edited files.
+- Closing nvim (`:q`) removes the pane; the next edit re-creates it cleanly.
+- Silent no-op when: not in tmux, `nvim` missing, or `jq` missing. The hook always exits 0 so it can never block an edit.
+
+Socket path: `${XDG_RUNTIME_DIR:-/tmp}/claude-nvim-<tmux-server-pid>.sock` (unique per tmux server).
+
+You normally don't invoke `edit-show` directly — the hook handles it. If you need to force-refresh or open a file in the mirror manually, calling the verb is safe.
+
 ## Common patterns
 
 **Single dev server, then verify it came up:**
@@ -93,6 +111,13 @@ For special keys (Ctrl-C, arrow keys), use `tmux send-keys` directly with a pane
     spawn --label shell -- bash
     send --label shell -- 'echo hello'
     capture --label shell --lines 5
+
+**User reports issues in a pane Claude can't see directly:**
+
+When the user says things like "I'm seeing errors in the panes", "the dev server is failing", or "check the [X] pane", inspect via `list` + `capture` rather than asking them to paste output.
+
+    list                               # see what's running and their slugs
+    capture --label api --lines 80     # read recent output from the relevant pane(s)
 
 ## Limitations
 

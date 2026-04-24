@@ -5,16 +5,17 @@ A Claude Code skill that lets Claude put long-lived processes (dev servers, watc
 ## Layout
 
 ```
-+-------------------------------+
-| Claude (top)                  |
-|                               |
-+---+---+---+-------------------+
-| A | B | C |
-+---+---+---+
-   bottom strip (long-lived)
++------------------+------------------+
+| Claude           | nvim editor      |
+|                  | (mgmt:editor)    |
++------------------+------------------+
+| A   |   B   |   C  (full width)    |
++-------------------------------------+
+        bottom strip (long-lived)
 ```
 
-- **Bottom strip** — long-lived processes. First takes 25% of height; subsequent panes tile horizontally and re-equalize.
+- **Bottom strip** — long-lived processes. First takes 25% of height (full window width); subsequent panes tile horizontally and re-equalize.
+- **Edit mirror** — a persistent nvim on the right half of Claude's row, driven automatically by a `PostToolUse` hook: every file Claude edits is loaded as a new buffer. Reserved label `editor`.
 
 ## Install
 
@@ -49,11 +50,31 @@ Run the helper as `~/.claude/skills/claude-tmux/scripts/tmux-pane.sh <verb>`.
 | Verb | Usage | Purpose |
 |---|---|---|
 | `check-env` | — | Exit 0 if inside tmux. |
-| `spawn` | `--label <slug> -- <cmd...>` | Start a long-lived process in the bottom strip. |
+| `spawn` | `--label <slug> -- <cmd...>` | Start a long-lived process in the bottom strip (full width). |
+| `edit-show` | `--file <path>` | Open `<path>` in the persistent right-side nvim (new buffer if it's already running). Driven by the `PostToolUse` hook. |
 | `list` | — | Print managed panes (`mgmt:*`). |
 | `send` | `--label <slug> -- <text>` | Send literal text + Enter to a pane. |
 | `capture` | `--label <slug> [--lines N]` | Print last N lines of a pane (default 200). |
 | `kill` | `--label <slug>` | Kill a pane; rebalance the strip. |
+
+## PostToolUse hook
+
+The edit mirror is wired up via `~/.claude/settings.json`:
+
+```json
+"hooks": {
+  "PostToolUse": [
+    {
+      "matcher": "Edit|Write|MultiEdit|NotebookEdit",
+      "hooks": [
+        { "type": "command", "command": "~/.claude/skills/claude-tmux/scripts/edit-hook.sh" }
+      ]
+    }
+  ]
+}
+```
+
+`edit-hook.sh` parses the tool JSON, resolves an absolute path, and calls `edit-show`. It always exits 0 and silently no-ops if `$TMUX` is unset, `nvim` is missing, or `jq` is missing — so edits are never blocked.
 
 ## Design notes
 

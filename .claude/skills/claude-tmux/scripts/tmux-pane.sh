@@ -6,6 +6,9 @@ set -euo pipefail
 
 MGMT_PREFIX="mgmt:"
 STRIP_HEIGHT="25%"
+EDITOR_LABEL="editor"
+EDITOR_TITLE="${MGMT_PREFIX}${EDITOR_LABEL}"
+EDITOR_WIDTH="50%"
 DEFAULT_CAPTURE_LINES=200
 
 err() { echo "tmux-pane: $*" >&2; }
@@ -22,9 +25,21 @@ panes_by_title() {
 
 mgmt_long_lived_ids() {
   tmux list-panes -s -F '#{pane_left} #{pane_id} #{pane_title}' \
-    | awk -v p="$MGMT_PREFIX" 'index($3,p)==1' \
+    | awk -v p="$MGMT_PREFIX" -v e="$EDITOR_TITLE" 'index($3,p)==1 && $3!=e' \
     | sort -n \
     | awk '{print $2}'
+}
+
+nvim_socket() {
+  local base="${XDG_RUNTIME_DIR:-/tmp}"
+  local tmux_pid
+  tmux_pid=$(tmux display-message -p '#{pid}' 2>/dev/null || echo "$$")
+  echo "${base}/claude-nvim-${tmux_pid}.sock"
+}
+
+editor_alive() {
+  local sock="$1"
+  [[ -S "$sock" ]] && nvim --server "$sock" --remote-expr '1' >/dev/null 2>&1
 }
 
 restore_focus() {
@@ -60,11 +75,12 @@ usage: tmux-pane.sh <verb> [flags]
 
 verbs:
   check-env                                  exit 0 iff inside a tmux session
-  spawn    --label <slug> -- <cmd...>        long-lived process, bottom strip
+  spawn     --label <slug> -- <cmd...>       long-lived process, full-width bottom strip
+  edit-show --file <path>                    open/focus <path> in persistent right-side nvim
   list                                       list managed panes
-  send     --label <slug> -- <text>          send literal text + Enter to a pane
-  capture  --label <slug> [--lines N]        capture last N lines (default ${DEFAULT_CAPTURE_LINES})
-  kill     --label <slug>                    kill a managed pane
+  send      --label <slug> -- <text>         send literal text + Enter to a pane
+  capture   --label <slug> [--lines N]       capture last N lines (default ${DEFAULT_CAPTURE_LINES})
+  kill      --label <slug>                   kill a managed pane
 EOF
 }
 
@@ -86,6 +102,7 @@ cmd_spawn() {
     esac
   done
   [[ -n "$label" ]] || die "spawn requires --label <slug>"
+  [[ "$label" != "$EDITOR_LABEL" ]] || die "label '$EDITOR_LABEL' is reserved for the edit mirror (use edit-show)"
   [[ ${#cmd_args[@]} -gt 0 ]] || die "spawn requires -- <cmd...>"
   if [[ -n "$(panes_by_title "${MGMT_PREFIX}${label}")" ]]; then
     die "pane with label '$label' already exists (kill it first)"
@@ -97,11 +114,13 @@ cmd_spawn() {
   existing=$(mgmt_long_lived_ids)
 
   if [[ -z "$existing" ]]; then
+    # First strip pane: full window width (-f) so it stays full-width even when
+    # Claude's pane has been split for the editor mirror.
     target="${cp:-}"
     if [[ -n "$target" ]]; then
-      new_pane=$(tmux split-window -v -l "$STRIP_HEIGHT" -t "$target" -P -F '#{pane_id}' "$cmd_str")
+      new_pane=$(tmux split-window -v -f -l "$STRIP_HEIGHT" -t "$target" -P -F '#{pane_id}' "$cmd_str")
     else
-      new_pane=$(tmux split-window -v -l "$STRIP_HEIGHT" -P -F '#{pane_id}' "$cmd_str")
+      new_pane=$(tmux split-window -v -f -l "$STRIP_HEIGHT" -P -F '#{pane_id}' "$cmd_str")
     fi
   else
     target=$(echo "$existing" | head -n1)
@@ -114,6 +133,53 @@ cmd_spawn() {
   restore_focus
 
   printf '%s %s%s\n' "$new_pane" "$MGMT_PREFIX" "$label"
+}
+
+cmd_edit_show() {
+  require_tmux
+  local file=""
+  while [[ $# -gt 0 ]]; do
+    case "$1" in
+      --file) file="${2:-}"; shift 2;;
+      -h|--help) usage; exit 0;;
+      *) die "unknown flag: $1";;
+    esac
+  done
+  [[ -n "$file" ]] || die "edit-show requires --file <path>"
+  command -v nvim >/dev/null 2>&1 || die "nvim not on PATH"
+
+  local abs
+  abs=$(readlink -f -- "$file" 2>/dev/null)
+  [[ -n "$abs" ]] || abs="$file"
+
+  local sock pid cp
+  sock=$(nvim_socket)
+  pid=$(panes_by_title "$EDITOR_TITLE")
+  cp=$(claude_pane)
+
+  if [[ -n "$pid" ]]; then
+    if editor_alive "$sock"; then
+      nvim --server "$sock" --remote "$abs" >/dev/null 2>&1 || true
+      restore_focus
+      printf '%s %s\n' "$pid" "$EDITOR_TITLE"
+      return 0
+    fi
+    tmux kill-pane -t "$pid" 2>/dev/null || true
+    rm -f -- "$sock" 2>/dev/null || true
+  fi
+
+  rm -f -- "$sock" 2>/dev/null || true
+  local nvim_cmd
+  printf -v nvim_cmd 'nvim --listen %q -- %q' "$sock" "$abs"
+  local new_pane target="${cp:-}"
+  if [[ -n "$target" ]]; then
+    new_pane=$(tmux split-window -h -l "$EDITOR_WIDTH" -t "$target" -P -F '#{pane_id}' "$nvim_cmd")
+  else
+    new_pane=$(tmux split-window -h -l "$EDITOR_WIDTH" -P -F '#{pane_id}' "$nvim_cmd")
+  fi
+  tmux select-pane -t "$new_pane" -T "$EDITOR_TITLE"
+  restore_focus
+  printf '%s %s\n' "$new_pane" "$EDITOR_TITLE"
 }
 
 cmd_list() {
@@ -185,6 +251,7 @@ shift
 case "$verb" in
   check-env) cmd_check_env "$@";;
   spawn)     cmd_spawn "$@";;
+  edit-show) cmd_edit_show "$@";;
   list)      cmd_list "$@";;
   send)      cmd_send "$@";;
   capture)   cmd_capture "$@";;
