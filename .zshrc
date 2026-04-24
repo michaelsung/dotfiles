@@ -35,3 +35,4 @@ export NVM_DIR="$HOME/.nvm"
 
 # claude-docker testing
 export PATH="$HOME/projects/claude-docker:$PATH"
+eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv zsh)"
