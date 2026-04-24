@@ -32,16 +32,26 @@ case "$tool" in
     ;;
 esac
 
-line=""
+start=""; end=""
 if [[ -n "$snippet" && -f "$abs" ]]; then
   anchor=$(printf '%s' "$snippet" | head -n 30 | awk 'NF && length($0) > best_len { best_len = length($0); best = $0 } END { print best }')
   if [[ -n "$anchor" ]]; then
-    line=$(grep -nF -- "$anchor" "$abs" 2>/dev/null | head -n1 | cut -d: -f1)
+    anchor_file_line=$(grep -nF -- "$anchor" "$abs" 2>/dev/null | head -n1 | cut -d: -f1)
+    if [[ -n "$anchor_file_line" ]]; then
+      # Line number of the anchor inside new_string (1-based), and total line count.
+      anchor_snippet_line=$(printf '%s' "$snippet" | head -n 30 | awk -v a="$anchor" '$0==a{print NR; exit}')
+      snippet_lines=$(printf '%s' "$snippet" | awk 'END{print NR+(length($0)>0?0:0)}')
+      [[ -z "$anchor_snippet_line" ]] && anchor_snippet_line=1
+      [[ -z "$snippet_lines" || "$snippet_lines" == "0" ]] && snippet_lines=1
+      start=$(( anchor_file_line - anchor_snippet_line + 1 ))
+      (( start < 1 )) && start=1
+      end=$(( start + snippet_lines - 1 ))
+    fi
   fi
 fi
 
-if [[ -n "$line" ]]; then
-  ~/.claude/skills/claude-tmux/scripts/tmux-pane.sh edit-show --file "$abs" --line "$line" >/dev/null 2>&1 || true
+if [[ -n "$start" && -n "$end" ]]; then
+  ~/.claude/skills/claude-tmux/scripts/tmux-pane.sh edit-show --file "$abs" --start "$start" --end "$end" >/dev/null 2>&1 || true
 else
   ~/.claude/skills/claude-tmux/scripts/tmux-pane.sh edit-show --file "$abs" >/dev/null 2>&1 || true
 fi

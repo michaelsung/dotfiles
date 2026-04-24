@@ -80,15 +80,15 @@ For special keys (Ctrl-C, arrow keys), use `tmux send-keys` directly with a pane
 
 After every `Edit`, `Write`, `MultiEdit`, or `NotebookEdit` tool call, a `PostToolUse` hook (`scripts/edit-hook.sh`) calls:
 
-    ~/.claude/skills/claude-tmux/scripts/tmux-pane.sh edit-show --file <abs-path> [--line <n>]
+    ~/.claude/skills/claude-tmux/scripts/tmux-pane.sh edit-show --file <abs-path> [--start <s> --end <e>]
 
-The hook picks a text anchor for the edit (for `Edit` / `MultiEdit`, the longest non-blank line from the first 30 lines of `new_string` — longer lines are more likely to be unique), searches the post-edit file for it, and passes the resulting line number as `--line`.
+The hook picks a text anchor for the edit (for `Edit` / `MultiEdit`, the longest non-blank line from the first 30 lines of `new_string` — longer lines are more likely to be unique), searches the post-edit file for it, and derives the edited line range by combining the anchor's position in the file with its offset inside `new_string` and the total new line count.
 
 Behavior:
 
-- First edit: splits Claude's pane vertically (right 40%) and launches `nvim --listen <sock> +<line> -c 'normal! zz' -- <file>`, so the cursor lands on the edited region, centered. Pane title becomes `mgmt:editor`.
-- Subsequent edits: `nvim --server <sock> --remote <file>` switches to the buffer, `:checktime` reloads from disk (buffers would otherwise go stale after an Edit/Write), then `:<line><CR>zz` jumps the cursor to the edited region and centers it. `:ls` inside nvim shows the history of edited files.
-- When the anchor can't be resolved (deletion with empty `new_string`, or anchor not found), `--line` is omitted and the buffer opens without scrolling.
+- First edit: splits Claude's pane vertically (right 40%) and launches `nvim --listen <sock> -c '<s>mark a' -c '<e>mark b' -c '<s>' -c 'normal! zz' -- <file>`. Marks `a` and `b` bracket the edited range; cursor lands on the start line, centered. Pane title becomes `mgmt:editor`.
+- Subsequent edits: `nvim --server <sock> --remote <file>` switches to the buffer, `:checktime` reloads from disk (buffers would otherwise go stale after an Edit/Write), then `:<s>mark a<CR>:<e>mark b<CR>:<s><CR>zz` re-sets the marks, jumps, and centers. `:ls` inside nvim shows the history of edited files; ``'a``/``'b`` (or `` `a ``/`` `b ``) jump back to the edit range.
+- When the range can't be resolved (deletion with empty `new_string`, or anchor not found), the range flags are omitted and the buffer opens without scrolling or setting marks.
 - Closing nvim (`:q`) removes the pane; the next edit re-creates it cleanly.
 - Silent no-op when: not in tmux, `nvim` missing, or `jq` missing. The hook always exits 0 so it can never block an edit.
 
