@@ -23,7 +23,7 @@ Helper script: `~/.claude/skills/claude-tmux/scripts/tmux-pane.sh`
 ```
 
 - **Bottom strip** — long-lived processes. First `spawn` takes 25% of height off the window (full width, via `-f`); subsequent `spawn`s split the strip horizontally and equalize widths. Always spans the full window width, regardless of whether the editor pane is open.
-- **Editor mirror** — a single persistent nvim pane on the right half of Claude's row, labeled `mgmt:editor`. Driven automatically by the `PostToolUse` hook; reserved slug.
+- **Editor mirror** — a single persistent nvim pane on the right side of Claude's row (40% width), labeled `mgmt:editor`. Driven automatically by the `PostToolUse` hook; reserved slug. Each edit scrolls the buffer to the changed region.
 
 Pane identity is a slug (e.g. `frontend`, `api`) stored in the pane title as `mgmt:<slug>`. The slug `editor` is reserved.
 
@@ -80,12 +80,15 @@ For special keys (Ctrl-C, arrow keys), use `tmux send-keys` directly with a pane
 
 After every `Edit`, `Write`, `MultiEdit`, or `NotebookEdit` tool call, a `PostToolUse` hook (`scripts/edit-hook.sh`) calls:
 
-    ~/.claude/skills/claude-tmux/scripts/tmux-pane.sh edit-show --file <abs-path>
+    ~/.claude/skills/claude-tmux/scripts/tmux-pane.sh edit-show --file <abs-path> [--line <n>]
+
+The hook picks a text anchor for the edit (for `Edit` / `MultiEdit`, the longest non-blank line from the first 30 lines of `new_string` — longer lines are more likely to be unique), searches the post-edit file for it, and passes the resulting line number as `--line`.
 
 Behavior:
 
-- First edit: splits Claude's pane vertically (right 50%) and launches `nvim --listen <sock> <file>`. Pane title becomes `mgmt:editor`.
-- Subsequent edits: `nvim --server <sock> --remote <file>` opens the file as a new buffer in the same nvim and focuses it. `:ls` inside nvim shows the history of edited files.
+- First edit: splits Claude's pane vertically (right 40%) and launches `nvim --listen <sock> +<line> -c 'normal! zz' -- <file>`, so the cursor lands on the edited region, centered. Pane title becomes `mgmt:editor`.
+- Subsequent edits: `nvim --server <sock> --remote <file>` switches to the buffer, `:checktime` reloads from disk (buffers would otherwise go stale after an Edit/Write), then `:<line><CR>zz` jumps the cursor to the edited region and centers it. `:ls` inside nvim shows the history of edited files.
+- When the anchor can't be resolved (deletion with empty `new_string`, or anchor not found), `--line` is omitted and the buffer opens without scrolling.
 - Closing nvim (`:q`) removes the pane; the next edit re-creates it cleanly.
 - Silent no-op when: not in tmux, `nvim` missing, or `jq` missing. The hook always exits 0 so it can never block an edit.
 

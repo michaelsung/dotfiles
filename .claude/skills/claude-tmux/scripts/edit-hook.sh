@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
-# PostToolUse hook — mirrors the edited file in a persistent right-side nvim pane.
+# PostToolUse hook — mirrors the edited file in a persistent right-side nvim pane,
+# scrolled to the chunk that was just edited.
 # MUST always exit 0: hooks run in the edit path and must never block a tool.
 set -u
 
@@ -17,5 +18,31 @@ file=$(printf '%s' "$input" | jq -r '.tool_input.file_path // .tool_input.notebo
 abs=$(readlink -f -- "$file" 2>/dev/null)
 [[ -n "$abs" ]] || abs="$file"
 
-~/.claude/skills/claude-tmux/scripts/tmux-pane.sh edit-show --file "$abs" >/dev/null 2>&1 || true
+# Derive a text anchor for the edited region, then resolve it to a line number
+# by searching the post-edit file. Longer lines are more likely to be unique,
+# so we pick the longest non-blank line from the first 30 lines of new content.
+tool=$(printf '%s' "$input" | jq -r '.tool_name // empty')
+snippet=""
+case "$tool" in
+  Edit)
+    snippet=$(printf '%s' "$input" | jq -r '.tool_input.new_string // empty')
+    ;;
+  MultiEdit)
+    snippet=$(printf '%s' "$input" | jq -r '(.tool_input.edits // []) | last | .new_string // empty')
+    ;;
+esac
+
+line=""
+if [[ -n "$snippet" && -f "$abs" ]]; then
+  anchor=$(printf '%s' "$snippet" | head -n 30 | awk 'NF && length($0) > best_len { best_len = length($0); best = $0 } END { print best }')
+  if [[ -n "$anchor" ]]; then
+    line=$(grep -nF -- "$anchor" "$abs" 2>/dev/null | head -n1 | cut -d: -f1)
+  fi
+fi
+
+if [[ -n "$line" ]]; then
+  ~/.claude/skills/claude-tmux/scripts/tmux-pane.sh edit-show --file "$abs" --line "$line" >/dev/null 2>&1 || true
+else
+  ~/.claude/skills/claude-tmux/scripts/tmux-pane.sh edit-show --file "$abs" >/dev/null 2>&1 || true
+fi
 exit 0

@@ -8,7 +8,7 @@ MGMT_PREFIX="mgmt:"
 STRIP_HEIGHT="25%"
 EDITOR_LABEL="editor"
 EDITOR_TITLE="${MGMT_PREFIX}${EDITOR_LABEL}"
-EDITOR_WIDTH="50%"
+EDITOR_WIDTH="40%"
 DEFAULT_CAPTURE_LINES=200
 
 err() { echo "tmux-pane: $*" >&2; }
@@ -76,7 +76,7 @@ usage: tmux-pane.sh <verb> [flags]
 verbs:
   check-env                                  exit 0 iff inside a tmux session
   spawn     --label <slug> -- <cmd...>       long-lived process, full-width bottom strip
-  edit-show --file <path>                    open/focus <path> in persistent right-side nvim
+  edit-show --file <path> [--line <n>]       open/focus <path> in persistent right-side nvim, optionally scrolled to <n>
   list                                       list managed panes
   send      --label <slug> -- <text>         send literal text + Enter to a pane
   capture   --label <slug> [--lines N]       capture last N lines (default ${DEFAULT_CAPTURE_LINES})
@@ -137,15 +137,17 @@ cmd_spawn() {
 
 cmd_edit_show() {
   require_tmux
-  local file=""
+  local file="" line=""
   while [[ $# -gt 0 ]]; do
     case "$1" in
       --file) file="${2:-}"; shift 2;;
+      --line) line="${2:-}"; shift 2;;
       -h|--help) usage; exit 0;;
       *) die "unknown flag: $1";;
     esac
   done
   [[ -n "$file" ]] || die "edit-show requires --file <path>"
+  [[ -z "$line" || "$line" =~ ^[0-9]+$ ]] || die "--line must be a positive integer"
   command -v nvim >/dev/null 2>&1 || die "nvim not on PATH"
 
   local abs
@@ -159,7 +161,14 @@ cmd_edit_show() {
 
   if [[ -n "$pid" ]]; then
     if editor_alive "$sock"; then
-      nvim --server "$sock" --remote "$abs" >/dev/null 2>&1 || true
+      nvim --server "$sock" --remote -- "$abs" >/dev/null 2>&1 || true
+      # Normal mode, reload from disk (buffer may be stale after Edit/Write),
+      # then jump to the edited line and center it.
+      local keys="<C-\\><C-n>:checktime<CR>"
+      if [[ -n "$line" ]]; then
+        keys+=":${line}<CR>zz"
+      fi
+      nvim --server "$sock" --remote-send "$keys" >/dev/null 2>&1 || true
       restore_focus
       printf '%s %s\n' "$pid" "$EDITOR_TITLE"
       return 0
@@ -170,7 +179,12 @@ cmd_edit_show() {
 
   rm -f -- "$sock" 2>/dev/null || true
   local nvim_cmd
-  printf -v nvim_cmd 'nvim --listen %q -- %q' "$sock" "$abs"
+  if [[ -n "$line" ]]; then
+    # +N jumps to line N on load; `-c "normal! zz"` centers it.
+    printf -v nvim_cmd 'nvim --listen %q +%q -c %q -- %q' "$sock" "$line" 'normal! zz' "$abs"
+  else
+    printf -v nvim_cmd 'nvim --listen %q -- %q' "$sock" "$abs"
+  fi
   local new_pane target="${cp:-}"
   if [[ -n "$target" ]]; then
     new_pane=$(tmux split-window -h -l "$EDITOR_WIDTH" -t "$target" -P -F '#{pane_id}' "$nvim_cmd")
