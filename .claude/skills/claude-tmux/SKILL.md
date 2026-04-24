@@ -1,6 +1,6 @@
 ---
 name: claude-tmux
-description: Spawn or inspect long-lived processes in visible tmux panes below Claude's own pane, instead of blocking the shell or hiding output via run_in_background. SPAWN for dev servers, file watchers, tail -f, docker logs -f, message consumers — anything the user will want to watch over time (trigger phrases like "run the dev server", "start the backend", "spin up", "start it in the background but visibly"). INSPECT (via list + capture) when the user references or reports issues with something already running in a pane — they're pointing Claude at output that's visible to them but not in the conversation (trigger phrases like "check the [X] pane", "what's in the tmux pane", "errors in the panes", "the dev server is failing", "getting issues from my dev server"). Do NOT trigger for build/test/lint runs where Claude needs the exit code synchronously, or for trivial reads Claude does itself (ls, grep, cat).
+description: Spawn, inspect, or stop long-lived processes in visible tmux panes below Claude's own pane, instead of blocking the shell or hiding output via run_in_background. SPAWN for dev servers, file watchers, tail -f, docker logs -f, message consumers — anything the user will want to watch over time (trigger phrases like "run the dev server", "start the backend", "spin up", "start it in the background but visibly"). INSPECT (via list + capture) when the user references or reports issues with something already running in a pane — they're pointing Claude at output that's visible to them but not in the conversation (trigger phrases like "check the [X] pane", "what's in the tmux pane", "errors in the panes", "the dev server is failing", "getting issues from my dev server"). STOP/KILL (via kill) when the user wants to shut down something running in a managed pane (trigger phrases like "stop the dev server", "stop the dev servers", "kill the [X] pane", "shut down the backend", "stop it", "tear down the panes") — use the skill's `kill` verb rather than sending Ctrl-C via raw tmux. Do NOT trigger for build/test/lint runs where Claude needs the exit code synchronously, or for trivial reads Claude does itself (ls, grep, cat).
 tools: Bash
 ---
 
@@ -118,6 +118,14 @@ When the user says things like "I'm seeing errors in the panes", "the dev server
 
     list                               # see what's running and their slugs
     capture --label api --lines 80     # read recent output from the relevant pane(s)
+
+**User asks to stop/kill managed panes:**
+
+When the user says "stop the dev servers", "kill the [X] pane", "shut down the backend", or similar, use `kill` — don't send Ctrl-C via raw tmux. `kill` both signals the process and removes the pane (re-equalizing the strip). Start with `list` if you don't already know the slugs.
+
+    list                               # discover slugs if needed
+    kill --label api
+    kill --label web
 
 ## Limitations
 
