@@ -36,6 +36,7 @@ The bootstrap script installs Claude Code plugins and configures the Playwright 
 - [Claude Code](https://claude.ai/code) (`npm install -g @anthropic-ai/claude-code`)
 - [nvm](https://github.com/nvm-sh/nvm) (for Node version management; provides `node` and `npx`)
 - [jq](https://jqlang.github.io/jq/) (`brew install jq` / `apt install jq`) — required by `.claude/statusline.sh` for JSON parsing
+- [Neovim](https://neovim.io/) (`brew install neovim` / `apt install neovim`) — required by the `claude-tmux` skill's edit mirror
 - [tmux](https://github.com/tmux/tmux) + [tpm](https://github.com/tmux-plugins/tpm) (for tmux plugins)
 - [tmux-hint](https://github.com/michaelsung/tmux-hint) cloned to `~/projects/tmux-hint/`
 
